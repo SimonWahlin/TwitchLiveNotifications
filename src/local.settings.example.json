@@ -1,0 +1,27 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "DISABLE_NOTIFICATIONS": "true",
+    "DiscordOnFollowTemplate": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
+    "DiscordOnStreamOnlineTemplate": "Live now on Twitch!{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}#PowerShell #PowerShellLive",
+    "DiscordWebhookUri": "<your webhook url>",
+    "queueAddSubscription": "addsubscription",
+    "queueDiscordHandler": "discordmessagequeue",
+    "queueEventOnFollow": "onfollowevent",
+    "queueEventOnSteamOnline": "streamonlinequeue",
+    "queueEventOnStreamOffline": "streamofflinequeue",
+    "queueTwitterHandler": "twittertweetqueue",
+    "Twitch_CallbackUrl": "<your callback url>",
+    "Twitch_ClientId": "<your twitch client id>",
+    "Twitch_ClientSecret": "<your twitch client secret>",
+    "Twitch_SignatureSecret": "<your twitch signature secret>",
+    "TwitterConsumerKey": "<your twitter consumer key>",
+    "TwitterConsumerSecret": "<your twitter consumer secret>",
+    "TwitterAccessToken": "<your twitter access token>",
+    "TwitterAccessTokenSecret": "<your twitter access token secret>",
+    "TwitterOnFollowTemplate": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
+    "TwitterOnStreamOnlineTemplate": "Live now on Twitch!{newline}{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}{newline}#PowerShell #PowerShellLive"
+  }
+}
