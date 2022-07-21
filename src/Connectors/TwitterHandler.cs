@@ -1,11 +1,10 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using System.Net.Http;
 using System.Threading.Tasks;
 using TwitchLiveNotifications.Helpers;
 using TwitchLiveNotifications.Models;
 
-namespace TwitchLiveNotifications
+namespace TwitchLiveNotifications.Connectors
 {
     public class TwitterHandler
     {
@@ -17,10 +16,9 @@ namespace TwitchLiveNotifications
         }
 
         [Function("TwitterHandler")]
-        public async Task<string> Run([QueueTrigger("%queueTwitterHandler%", Connection = "")] string message)
+        public async Task Run([QueueTrigger("%queueTwitterHandler%", Connection = "StorageQueueConnection")] TweetMessage message)
         {
-            await TwitterClient.PublishTweet(message, _logger);
-            return message;
+            await TwitterClientV1.PublishTweet(message, _logger);
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLiveNotifications.Helpers
+﻿namespace TwitchLiveNotifications.Helpers
 {
     internal class ConfigValues
     {
@@ -14,6 +8,7 @@ namespace TwitchLiveNotifications.Helpers
         public static string DiscordOnStreamOnlineTemplate = "DiscordOnStreamOnlineTemplate";
         public static string DiscordWebhookUri = "DiscordWebhookUri";
         public static string queueAddSubscription = "queueAddSubscription";
+        public static string queueRemoveSubscription = "queueRemoveSubscription";
         public static string queueDiscordHandler = "queueDiscordHandler";
         public static string queueEventOnFollow = "queueEventOnFollow";
         public static string queueEventOnSteamOnline = "queueEventOnSteamOnline";
@@ -27,10 +22,12 @@ namespace TwitchLiveNotifications.Helpers
         public static string TwitterConsumerSecret = "TwitterConsumerSecret";
         public static string TwitterAccessToken = "TwitterAccessToken";
         public static string TwitterAccessTokenSecret = "TwitterAccessTokenSecret";
+        public static string TwitterUseV2API = "TwitterUseV2API";
         public static string TwitterOnFollowTemplate = "TwitterOnFollowTemplate";
         public static string TwitterOnStreamOnlineTemplate = "TwitterOnStreamOnlineTemplate";
         public static string tableTwichLiveNotificationsConfiguration = "TwichLiveNotificationsConfiguration";
-        public static string QueueServiceStorageAccount = "AzureWebJobsStorage";
-        public static string TableServiceStorageAccount = "AzureWebJobsStorage";
+        public static string QueueServiceStorageAccount = "StorageQueueConnection__queueServiceUri";
+        public static string TableServiceStorageAccount = "StorageTableConnection__tableServiceUri";
+        public static string TwitterUri = "https://api.twitter.com/2/tweets";
     }
 }

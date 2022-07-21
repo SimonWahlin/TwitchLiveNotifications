@@ -3,7 +3,10 @@ using Azure.Storage.Queues;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Twitch.Net.Api.Client;
 using Twitch.Net.EventSub.Notifications;
 using TwitchLiveNotifications.Helpers;
@@ -29,41 +32,46 @@ namespace TwitchLiveNotifications.EventFunctions
         }
 
         [Function("OnStreamOnline")]
-        public void Run([QueueTrigger("%queueEventOnSteamOnline%", Connection = "")] StreamOnlineNotificationEvent onlineNotification)
+        public async Task<StreamOnlineNotificationEvent> Run([QueueTrigger("%queueEventOnSteamOnline%", Connection = "StorageQueueConnection")] StreamOnlineNotificationEvent onlineNotification)
         {
             if (onlineNotification.Type != "live")
             {
-                return;
+                return onlineNotification;
             }
 
             var channelConfig = SubscriptionConfig.GetTwitchSubscriptionConfiguration(onlineNotification.BroadcasterIdString, _configTable);
             var streamUri = $"https://twitch.tv/{onlineNotification.BroadcasterUserName}";
-            //var twitchChannelRequest = await _apiClient.Helix.Channels.GetUsersAsync(
-            //    logins: new List<string>
-            //    {
-            //        onlineNotification.BroadcasterIdString
-            //    });
-            //string category;
-            // TODO: Fix Channels support for APIClient so we can lookup game and title
+            var channels = await _apiClient.Helix.Channels.GetChannelsAsync(
+                ids: new List<string>
+                {
+                    onlineNotification.BroadcasterIdString
+                });
+            var channel = channels.Channels.FirstOrDefault();
 
             var streamerName = string.IsNullOrEmpty(channelConfig.TwitterName) ? onlineNotification.BroadcasterUserName : $"@{channelConfig.TwitterName}";
-            string tweet = _twitterTemplate
-                .Replace("{streamer}", streamerName)
-                .Replace("{streamuri}", streamUri)
-                .Replace("{newline}", Environment.NewLine);
-            QueueHelpers.SendMessage(_logger, _queueClientService, "queueTwitterHandler", tweet);
+            var tweetMessage = new TweetMessage()
+            {
+                Text = BuildMessage(_twitterTemplate, streamerName, streamUri, channel.GameName, channel.Title)
+            };
+            QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
 
-
-            streamerName = string.IsNullOrEmpty(channelConfig.DiscordName) ? onlineNotification.BroadcasterUserName : $"@{channelConfig.DiscordName}";
+            streamerName = string.IsNullOrEmpty(channelConfig.DiscordName) ? onlineNotification.BroadcasterUserName : $"<@{channelConfig.DiscordName}>";
             var discordMessage = new DiscordMessage()
             {
-                Content = _discordTemplate
-                    .Replace("{streamer}", streamerName)
-                    .Replace("{streamuri}", streamUri)
-                    .Replace("{newline}", Environment.NewLine)
+                Content = BuildMessage(_discordTemplate, streamerName, streamUri, channel.GameName, channel.Title)
             };
-            QueueHelpers.SendMessage(_logger, _queueClientService, "queueDiscordHandler", JsonSerializer.Serialize(discordMessage));
-            return;
+            QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueDiscordHandler, JsonSerializer.Serialize(discordMessage));
+            return onlineNotification;
+        }
+
+        private static string BuildMessage(string template, string streamer, string streamuri, string gamename, string title)
+        {
+            return template
+                .Replace("{streamer}", streamer, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{streamuri}", streamuri, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{gamename}", gamename, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{title}", title, StringComparison.InvariantCultureIgnoreCase)
+                .Replace("{newline}", Environment.NewLine, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

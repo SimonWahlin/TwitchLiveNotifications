@@ -14,7 +14,7 @@ namespace TwitchLiveNotifications.Helpers
                 logger.LogInformation("Environment variable '{queueNameVariable}' is empty, no message posted", queueNameVariable);
                 return;
             }
-
+            logger.LogWarning("Queing message {message}", message);
             var queueClient = queueClientService.GetQueueClient(queueName);
             queueClient.CreateIfNotExists();
             queueClient.SendMessage(message);

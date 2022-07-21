@@ -1,0 +1,20 @@
+{
+  "CallBackUri": "<filled automatically>",
+  "DiscordWebhookUri": "<yourvalue>",
+  "FunctionAccessKey": "<filled automatically>",
+  "FunctionAppName": "<yourvalue>",
+  "FunctionAppResourceGroupName": "<yourvalue>",
+  "FunctionAppResourceId": "<filled automatically>",
+  "KeyVaultName": "<yourvalue>",
+  "KeyVaultResourceGroupName": "<yourvalue>",
+  "KeyVaultResourceId": "<filled automatically>",
+  "Location": "westeurope",
+  "StorageAccountName": "<filled automatically>",
+  "TwitchClientId": "<yourvalue>",
+  "TwitchClientSecret": "<yourvalue>",
+  "TwitchSignatureSecret": "<yourvalue>",
+  "TwitterAccessToken": "<yourvalue>",
+  "TwitterAccessTokenSecret": "<yourvalue>",
+  "TwitterConsumerKey": "<yourvalue>",
+  "TwitterConsumerSecret": "<yourvalue>"
+}

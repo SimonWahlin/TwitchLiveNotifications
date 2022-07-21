@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TwitchLiveNotifications.Helpers;
 using TwitchLiveNotifications.Models;
 
-namespace TwitchLiveNotifications
+namespace TwitchLiveNotifications.Connectors
 {
     public class DiscordHandler
     {
@@ -20,7 +20,7 @@ namespace TwitchLiveNotifications
         }
 
         [Function("DiscordHandler")]
-        public async Task<DiscordMessage> Run([QueueTrigger("%queueDiscordHandler%", Connection = "")] DiscordMessage message)
+        public async Task<DiscordMessage> Run([QueueTrigger("%queueDiscordHandler%", Connection = "StorageQueueConnection")] DiscordMessage message)
         {
             var discordClient = new DiscordClient(_logger, _httpClientFactory);
             await discordClient.SendDiscordMessageAsync(message);

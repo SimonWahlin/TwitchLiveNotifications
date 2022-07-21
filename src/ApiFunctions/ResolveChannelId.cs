@@ -11,35 +11,35 @@ using Twitch.Net.Api.Client;
 
 namespace TwitchLiveNotifications.ApiFunctions
 {
-    public class ResolveUserId
+    public class ResolveChannelId
     {
         private readonly ILogger _logger;
         private readonly IApiClient _apiClient;
 
-        public ResolveUserId(ILoggerFactory loggerFactory, IApiClient apiClient)
+        public ResolveChannelId(ILoggerFactory loggerFactory, IApiClient apiClient)
         {
-            _logger = loggerFactory.CreateLogger<ResolveUserId>();
+            _logger = loggerFactory.CreateLogger<ResolveChannelId>();
             _apiClient = apiClient;
         }
 
-        [Function("ResolveUserId")]
+        [Function("ResolveChannelId")]
         public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             _logger.LogInformation("Request body: {RequestBody}", requestBody);
 
-            var usernames = JsonSerializer.Deserialize<List<string>>(requestBody);
-            _logger.LogInformation("Usernames: {Usernames}", string.Join(',', usernames));
+            var ids = JsonSerializer.Deserialize<List<string>>(requestBody);
+            _logger.LogInformation("ids: {Usernames}", string.Join(',', ids));
 
-            var users = await _apiClient.Helix.Users.GetUsersAsync(logins: usernames);
+            var channels = await _apiClient.Helix.Channels.GetChannelsAsync(ids: ids);
 
             var options = new JsonSerializerOptions { WriteIndented = true };
             HttpResponseData response;
-            if (users.Successfully == 1)
+            if (channels.Successfully == 1)
             {
                 response = req.CreateResponse(HttpStatusCode.OK);
                 response.Headers.Add("Content-Type", "application/json; charset=utf-8");
-                response.WriteString(JsonSerializer.Serialize(users.Users, options));
+                response.WriteString(JsonSerializer.Serialize(channels.Channels, options));
                 return response;
             }
             response = req.CreateResponse(HttpStatusCode.NotFound);

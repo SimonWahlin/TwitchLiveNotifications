@@ -13,7 +13,6 @@ namespace TwitchLiveNotifications.Models
         private DateTimeOffset? timeStamp;
         private ETag etag;
 
-
         [JsonPropertyName("twitchname")]
         public string TwitchName { get; set; }
 
@@ -22,6 +21,8 @@ namespace TwitchLiveNotifications.Models
 
         [JsonPropertyName("discordname")]
         public string DiscordName { get; set; }
+
+        public string TwitchId { get; set; }
 
         public string PartitionKey { get => partitionKey; set => partitionKey = value; }
         public string RowKey { get => rowKey; set => rowKey = value; }
@@ -33,7 +34,13 @@ namespace TwitchLiveNotifications.Models
             var config = tableClient.Query<SubscriptionConfig>(e => e.PartitionKey == "TwitchSubscriptionConfig" && e.RowKey == channelId.ToLower()).FirstOrDefault();
             return config;
         }
+
+        public static void SetTwitchSubscriptionConfiguration(SubscriptionConfig config, TableClient tableClient)
+        {
+            tableClient.CreateIfNotExists();
+            config.partitionKey = "TwitchSubscriptionConfig";
+            config.RowKey = config.TwitchId.ToLower();
+            tableClient.UpsertEntity(config, TableUpdateMode.Replace);
+        }
     }
-
-
 }

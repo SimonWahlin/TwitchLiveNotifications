@@ -34,7 +34,6 @@ namespace TwitchLiveNotifications.Helpers
 
         private Task EventOnFollowed(NotificationEvent<ChannelFollowNotificationEvent> arg)
         {
-            // this should probably be a type like TwitchNotificationQueues.Onfollow
             string queueNameVariable = ConfigValues.queueEventOnFollow;
             _logger.LogInformation("[UserFollowedEvent] {UserName}#{UserId} followed {BroadcasterUserName}#{BroadcasterId}", arg.Event.UserName, arg.Event.UserId, arg.Event.BroadcasterUserName, arg.Event.BroadcasterId);
 

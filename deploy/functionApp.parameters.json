@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "functionAppName": {
+      "value": "{{FunctionAppName}}"
+    },
+    "storageAccountSku": {
+      "value": "Standard_LRS"
+    },
+    "appSettings": {
+      "value": {
+        "DISABLE_NOTIFICATIONS": "false",
+        "DiscordOnFollowTemplate": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
+        "DiscordOnStreamOnlineTemplate": "Live now on Twitch!{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}#PowerShell #PowerShellLive",
+        "DiscordWebhookUri": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=DiscordWebhookUri)",
+        "queueAddSubscription": "addsubscription",
+        "queueDiscordHandler": "discordmessagequeue",
+        "queueEventOnFollow": "onfollowevent",
+        "queueEventOnSteamOnline": "streamonlinequeue",
+        "queueEventOnStreamOffline": "streamofflinequeue",
+        "queueTwitterHandler": "twittertweetqueue",
+        "Twitch_ClientId": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=TwitchClientId)",
+        "Twitch_ClientSecret": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=TwitchClientSecret)",
+        "Twitch_SignatureSecret": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=TwitchSignatureSecret)",
+        "TwitterConsumerKey": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=TwitterConsumerKey)",
+        "TwitterConsumerSecret": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=TwitterConsumerSecret)",
+        "TwitterAccessToken": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=TwitterAccessToken)",
+        "TwitterAccessTokenSecret": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=TwitterAccessTokenSecret)",
+        "TwitterOnFollowTemplate": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
+        "TwitterOnStreamOnlineTemplate": "Live now on Twitch!{newline}{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}{newline}#PowerShell #PowerShellLive"
+      }
+    },
+    "deployPrincipalId": {
+      "value": "{{YourPrincipalId}}"
+    },
+    "deployPrincipalType": {
+      "value": "User"
+    },
+    "queueList": {
+      "value": [
+        "addsubscription",
+        "removesubscription",
+        "discordmessagequeue",
+        "onfollowevent",
+        "streamonlinequeue",
+        "streamofflinequeue",
+        "twittertweetqueue"
+      ]
+    },
+    "tableList": {
+      "value": [
+        "TwichLiveNotificationsConfiguration"
+      ]
+    },
+    "location": {
+      "value": "westeurope"
+    }
+  }
+}

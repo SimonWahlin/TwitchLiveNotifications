@@ -26,39 +26,34 @@ namespace TwitchLiveNotifications.EventSubFunctions
         }
 
         [Function("SubscriptionCallBack")]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequestData req,
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequestData req,
            FunctionContext executionContext)
         {
-            var requestBody = new StreamReader(req.Body).ReadToEndAsync();
             var type = req.Headers.GetValues(EventSubHeaderConst.MessageType).FirstOrDefault();
             var messageId = req.Headers.GetValues(EventSubHeaderConst.MessageId).FirstOrDefault();
-            HttpStatusCode httpStatusCode = HttpStatusCode.OK;
-
-            bool isDuplicate = false;
             string[] requestList = Array.Empty<string>();
 
             // For notification events, we need to keep track of duplicate requests.
             if (type == "notification")
             {
                 requestList = RequestDuplicationHelper.GetRequestList(_configTable);
-                isDuplicate = requestList.Where(id => id == messageId).Any();
+                if(requestList.Where(id => id == messageId).Any())
+                {
+                    _logger.LogInformation("Duplicate event, ignoring!");
+                    return req.CreateResponse(HttpStatusCode.OK);
+                }
             }
 
-            if (!isDuplicate)
-            {
-                _logger.LogInformation($"No duplicate, processing event");
-                var result = _eventSubService.Handle(req.Headers, await requestBody);
-                httpStatusCode = result.StatusCode;
+            var requestBody = await (new StreamReader(req.Body).ReadToEndAsync());
+            _logger.LogInformation("Got callback with {messageId} of type {type} and body: {requestBody}", messageId, type, requestBody);
+            
+            var result = _eventSubService.Handle(req.Headers, requestBody);
+            string responseBody = result?.CallBack?.Challenge ?? "";
+            RequestDuplicationHelper.UpdateRequestList(requestList, messageId, _configTable);
 
-                RequestDuplicationHelper.UpdateRequestList(requestList, messageId, _configTable);
-            }
-            else
-            {
-                _logger.LogInformation($"Duplicate event, ignoring!");
-            }
-
-            var response = req.CreateResponse(httpStatusCode);
+            var response = req.CreateResponse(result.StatusCode);
             response.Headers.Add("content-type", "text/plain");
+            response.WriteString(responseBody);
             return response;
         }
     }

@@ -21,12 +21,16 @@ namespace TwitchLiveNotifications
                     s.AddHttpClient();
                     s.AddAzureClients(builder =>
                     {
-                        builder.AddQueueServiceClient(Environment.GetEnvironmentVariable(ConfigValues.QueueServiceStorageAccount))
-                            .ConfigureOptions(c => c.MessageEncoding = Azure.Storage.Queues.QueueMessageEncoding.Base64);
+                        builder.AddQueueServiceClient(
+                            new Uri(Environment.GetEnvironmentVariable(ConfigValues.QueueServiceStorageAccount))
+                        ).ConfigureOptions(c => c.MessageEncoding = Azure.Storage.Queues.QueueMessageEncoding.Base64);
                         builder.UseCredential(new DefaultAzureCredential());
                     });
 
-                    s.AddSingleton<TableClient>(new TableClient(Environment.GetEnvironmentVariable(ConfigValues.TableServiceStorageAccount), ConfigValues.tableTwichLiveNotificationsConfiguration));
+                    s.AddSingleton<TableClient>(new TableClient(
+                        new Uri(Environment.GetEnvironmentVariable(ConfigValues.TableServiceStorageAccount)),
+                        ConfigValues.tableTwichLiveNotificationsConfiguration,
+                        new DefaultAzureCredential()));
 
                     s.AddTwitchEventSubService(config =>
                     {
