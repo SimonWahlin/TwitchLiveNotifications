@@ -1,11 +1,11 @@
 # TwitchLiveNotifications
 
-TwitchLiveNotifications is an Azure Function that registers a Webhook to Twitch's API to receive notifications when a stream is live. Whenever a streamer that are subscribed to starts streaming, a message will be posted to Discord and Twitter.
+TwitchLiveNotifications is an Azure Function that registers a Webhook to Twitch's API to receive notifications when a stream is live. We can subscribe to streamers and when they go start streaming a message will be posted to Discord and Twitter.
 
 ## Prerequisites
 
-1. dotnet v6.0 (Download from https://dotnet.microsoft.com/en-us/download)
-2. PowerShell modules. The deployment scripts depends on the four modules 
+1. .NET v6.0 (Download from https://dotnet.microsoft.com/en-us/download)
+2. PowerShell modules. The deployment scripts depend on the four modules 
 Az.Accounts, Az.KeyVault, Az.Resources, and Az.Storage. To install the exact versions I've tested with, run the following code:
       ```powershell
       @(
@@ -28,7 +28,7 @@ Az.Accounts, Az.KeyVault, Az.Resources, and Az.Storage. To install the exact ver
       ) | Foreach-Object {Install-Module @_  -Scope CurrentUser -Force}
       ```
 3. The project has a dependency on a fork of [Twitch.Net](https://github.com/iXyles/Twitch.Net). It needs to be cloned to the dependencies folder.  
-   Make sure you are in the root of the project when running the following code:
+   Make sure you are at the root of the project when running the following code:
    ```powershell
    New-Item -Path "dependencies" -ItemType Directory
    Push-Location -Path "dependencies"
@@ -45,7 +45,7 @@ The deployment requires a set of configuration values. Copy the file `deploy/fun
 
 Settings in `deploy/functionApp.parameters.json` can be modified to further customize the deployment. Especially the settings `DiscordOnStreamOnlineTemplate` and `TwitterOnStreamOnlineTemplate` can be changed to customize the messages posted.  
 
-## Deploy solution
+## Deploy the solution
 
 Run the script `deploy/fullDeploy.ps1` to deploy the whole solution.  
 
@@ -53,20 +53,20 @@ For a more customized experience or to re-deploy part of the solution, see secti
 
 ## Setup instructions running individual scripts
 
-If you want to setup the solution step by step instead of deploying the full solution, follow these steps:
+If you want to set up the solution step by step instead of deploying the full solution, follow these steps:
 
-1. Run PowerShell script `scripts/1-deployKeyVault.ps1` to deploy keyvault for configuration secrets.  
-   I find it handy to keep all secrets I have to manage in a separate keyvault in a separate resource group, this way I can lifecycle manage it separately from the function app.
-2. Add any secrets you want to store in the keyvault. The script `scripts/2-createSecrets.ps1` will create the recommended secrets for you.
-3. Deploy the function app infrastructure. First make sure `scripts/functionApp.parameters.json` is updated with your settings, then run `scripts/deployFunctionApp.ps1`.  
-   > ! Note that `<KeyVaultName>` needs to be replaced with the name of your keyvault.  
+1. Run PowerShell script `scripts/1-deployKeyVault.ps1` to deploy key vault for configuration secrets.  
+   I find it handy to keep all secrets I have to manage in a separate key vault in a separate resource group, this way I can lifecycle manage it separately from the function app.
+2. Add any secrets you want to store in the key vault. The script `scripts/2-createSecrets.ps1` will create the recommended secrets for you.
+3. Deploy the function app infrastructure. First, make sure `scripts/functionApp.parameters.json` is updated with your settings, then run `scripts/deployFunctionApp.ps1`.  
+   > ! Note that `<KeyVaultName>` needs to be replaced with the name of your key vault.  
    >   `<systemName>` needs to be replaced with the name your want for your function app.  
    >   `<yourPrincipalId>` needs to be replaced with the principal id of the user that should have access to deploy the code.  
-   >   Get your own principal id by running `Get-AzADUser -UserPrincipalName (Get-AzContext).Account.Id | Select-Object -ExpandProperty Id`  
+   >   Get your principal id by running `Get-AzADUser -UserPrincipalName (Get-AzContext).Account.Id | Select-Object -ExpandProperty Id`  
    Remember to take note of the output `StorageAccountName` and `FunctionAppId`, they are needed for deploying the code.
 4. Deploy the function app code. Run `scripts/4-deployCode.ps1`.
-5. Replace entries in `config/subscriptions.json` with your own details and run `config/AddSubscriptions.ps1` to register your subscriptions.
+5. Replace entries in `config/subscriptions.json` with your details and run `config/AddSubscriptions.ps1` to register your subscriptions.
 
 ## Register subscriptions
 
-To register subscriptions, replace the configuration in `config/subscriptions.json` with your own details and run `config/AddSubscriptions.ps1`.
+To register subscriptions, replace the configuration in `config/subscriptions.json` with your details and run `config/AddSubscriptions.ps1`.

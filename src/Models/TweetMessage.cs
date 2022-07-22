@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TwitchLiveNotifications.Models
+namespace TwitchLiveNotifications.Models;
+
+public class TweetMessage
 {
-    public class TweetMessage
-    {
-        [JsonPropertyName("text")]
-        public string Text { get; set; }
-    }
+    [JsonPropertyName("text")]
+    public string Text { get; set; }
 }
