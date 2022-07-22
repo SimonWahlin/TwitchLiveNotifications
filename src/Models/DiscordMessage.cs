@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TwitchLiveNotifications.Models
+namespace TwitchLiveNotifications.Models;
+
+public class DiscordMessage
 {
-    public class DiscordMessage
-    {
-        [JsonPropertyName("content")]
-        public string Content { get; set; }
-    }
+    [JsonPropertyName("content")]
+    public string Content { get; set; }
 }

@@ -4,21 +4,20 @@ using System.Threading.Tasks;
 using TwitchLiveNotifications.Helpers;
 using TwitchLiveNotifications.Models;
 
-namespace TwitchLiveNotifications.Connectors
+namespace TwitchLiveNotifications.Connectors;
+
+public class TwitterHandler
 {
-    public class TwitterHandler
+    private readonly ILogger _logger;
+
+    public TwitterHandler(ILoggerFactory loggerFactory)
     {
-        private readonly ILogger _logger;
+        _logger = loggerFactory.CreateLogger<TwitterHandler>();
+    }
 
-        public TwitterHandler(ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<TwitterHandler>();
-        }
-
-        [Function("TwitterHandler")]
-        public async Task Run([QueueTrigger("%queueTwitterHandler%", Connection = "StorageQueueConnection")] TweetMessage message)
-        {
-            await TwitterClientV1.PublishTweet(message, _logger);
-        }
+    [Function("TwitterHandler")]
+    public async Task Run([QueueTrigger("%queueTwitterHandler%", Connection = "StorageQueueConnection")] TweetMessage message)
+    {
+        await TwitterClientV1.PublishTweet(message, _logger);
     }
 }
