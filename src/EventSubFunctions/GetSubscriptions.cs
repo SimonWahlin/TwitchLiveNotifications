@@ -1,8 +1,10 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Optional.Unsafe;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Twitch.Net.EventSub;
 
 namespace TwitchLiveNotifications.EventSubFunctions;
 

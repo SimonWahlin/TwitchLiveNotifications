@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Twitch.Net.EventSub;
 using TwitchLiveNotifications.Helpers;
 
 namespace TwitchLiveNotifications.EventSubFunctions;

@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json;
+using Twitch.Net.EventSub.Notifications;
 using TwitchLiveNotifications.Helpers;
 using TwitchLiveNotifications.Models;
 

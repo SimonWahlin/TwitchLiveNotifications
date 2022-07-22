@@ -4,6 +4,8 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Twitch.Net.Api;
+using Twitch.Net.EventSub;
 using TwitchLiveNotifications.Helpers;
 
 var host = new HostBuilder()

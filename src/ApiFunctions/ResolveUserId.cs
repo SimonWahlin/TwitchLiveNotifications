@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Twitch.Net.Api.Client;
 
 namespace TwitchLiveNotifications.ApiFunctions;
 

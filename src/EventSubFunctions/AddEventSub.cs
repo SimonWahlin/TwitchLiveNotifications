@@ -1,6 +1,8 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Optional.Unsafe;
 using System.Threading.Tasks;
+using Twitch.Net.EventSub;
 using TwitchLiveNotifications.Models;
 
 namespace TwitchLiveNotifications.EventSubFunctions;

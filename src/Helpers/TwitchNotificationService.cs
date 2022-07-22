@@ -5,6 +5,8 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Twitch.Net.EventSub;
+using Twitch.Net.EventSub.Notifications;
 using TwitchLiveNotifications.EventSubFunctions;
 
 namespace TwitchLiveNotifications.Helpers;

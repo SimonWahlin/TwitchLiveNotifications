@@ -9,6 +9,8 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Twitch.Net.Api.Client;
+using Twitch.Net.EventSub;
 using TwitchLiveNotifications.Helpers;
 using TwitchLiveNotifications.Models;
 
