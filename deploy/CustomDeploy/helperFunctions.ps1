@@ -14,7 +14,7 @@ function Assert-ConfigValueOrDefault {
     process {
         try {
             $CurrentVariable = Get-Variable -Name $Name -Scope 1 -ValueOnly -ErrorAction 'Stop'
-            if($CurrentVariable.Length -gt 0) {
+            if ($CurrentVariable.Length -gt 0) {
                 Write-Verbose "Variable $Name is set by parameter with value [$CurrentVariable], do nothing" -Verbose
                 # Variable is set by parameter, do nothing
                 return
@@ -24,7 +24,7 @@ function Assert-ConfigValueOrDefault {
             # Variable not found, ignoring.
         }
     
-        if(Test-Path -Path "Env:/TWITCHLIVE_$Name") {
+        if (Test-Path -Path "Env:/TWITCHLIVE_$Name") {
             $Value = Get-Content -Path "Env:/TWITCHLIVE_$Name" -ErrorAction 'Stop'
             Set-Variable -Name $Name -Scope 1 -Value $Value
             return
@@ -32,24 +32,24 @@ function Assert-ConfigValueOrDefault {
     
         $ConfigFilePath = Resolve-Path -Path $ConfigFilePath -ErrorAction 'Stop'
     
-        if(-not (Test-Path $ConfigFilePath)) {
+        if (-not (Test-Path $ConfigFilePath)) {
             Write-Error -ErrorAction 'Stop' -Exception 'System.Management.Automation.ItemNotFoundException' -Message "Config file $ConfigFilePath was not found"
         }
         
         $Config = Get-Content -Path $ConfigFilePath -ErrorAction 'Stop' | ConvertFrom-Json -AsHashtable -ErrorAction 'Stop'
         # Navigate to parent node in json structure
-        if($JsonParentStructure.Count -gt 0) {
+        if ($JsonParentStructure.Count -gt 0) {
             $JsonParentStructure | ForEach-Object {
                 $Config = $Config[$_]
             }
         }
         
-        if($null -eq $Config[$Name]) {
+        if ($null -eq $Config[$Name]) {
             Write-Error -ErrorAction 'Stop' -Exception 'System.Management.Automation.ItemNotFoundException' -Message "Property $Name was not set in file $ConfigFilePath"
         }
         
         $Value = $Config[$Name]
-        if($CurrentVariable -is [securestring]) {
+        if ($CurrentVariable -is [securestring]) {
             $Value = $Value | ConvertTo-SecureString -AsPlainText -Force
         }
 
@@ -67,19 +67,18 @@ function Set-ConfigValue {
         $Value
     )
 
-    if(Test-Path -Path "Env:/TWITCHLIVE_$Name") {
+    if (Test-Path -Path "Env:/TWITCHLIVE_$Name") {
         Write-Verbose -Message "Config value $Name found in ENV var TWITCHLIVE_$Name. Configfile will not be updated." -Verbose         
         return
     }
 
     $ConfigFilePath = Resolve-Path -Path $ConfigFilePath -ErrorAction 'Stop'
 
-    if(-not (Test-Path $ConfigFilePath)) {
+    if (-not (Test-Path $ConfigFilePath)) {
         Write-Verbose -Message "Config file $ConfigFilePath was not found, config not updated." -Verbose
         return
     }
-    
-    $Config = Get-Content -Path $ConfigFilePath -ErrorAction 'Stop' | ConvertFrom-Json -AsHashtable -ErrorAction 'Stop'
+    $Config = Get-Content -Path $ConfigFilePath -ErrorAction 'Stop' | ConvertFrom-Json -ErrorAction 'Stop' | ConvertTo-OrderedHashtable
     $Config[$Name] = $Value
 
     $null = $Config | ConvertTo-Json -ErrorAction 'Stop' | Out-File $ConfigFilePath -Force -ErrorAction 'Stop'
@@ -109,14 +108,52 @@ function Import-ParametersFile {
         $ReplaceTokens
     )
     $ParametersContent = (Get-Content -Path $Path)
-    foreach($Key in $ReplaceTokens.Keys) {
+    foreach ($Key in $ReplaceTokens.Keys) {
         $ParametersContent = $ParametersContent -replace $Key, $ReplaceTokens[$Key]
     }
     
     $ParametersTable = $ParametersContent | ConvertFrom-Json -AsHashtable
     $ParametersObject = @{}
-    foreach($Key in $ParametersTable['parameters'].Keys) {
+    foreach ($Key in $ParametersTable['parameters'].Keys) {
         $ParametersObject[$Key] = $ParametersTable['parameters'][$Key]['value']
     }
     return $ParametersObject
+}
+
+function ConvertTo-OrderedHashtable {
+    [cmdletbinding()]
+    param(
+        [Parameter(Mandatory, ValueFromPipeline)]
+        [object]$InputObject
+    )
+    process {
+        if($InputObject.GetType().FullName -in @(
+            'System.String',
+            'System.Int16',
+            'System.Int32',
+            'System.Int64',
+            'System.Boolean'
+        )) {
+            return $InputObject
+        }
+
+        $hashtable = [ordered]@{}
+        $propertyNames = $InputObject.psobject.Properties.Name
+
+        foreach ($propertyName in $propertyNames) {
+            $Value = $(
+                if($null -eq $InputObject.$propertyName) {
+                    $null
+                }
+                elseif($InputObject.$propertyName.GetType().FullName -in 'System.Management.Automation.PSCustomObject', 'System.Object[]')  {
+                    $InputObject.$propertyName | ConvertTo-OrderedHashtable
+                }
+                else {
+                    $InputObject.$propertyName
+                }
+            )
+            $hashtable[$propertyName] = $Value
+        }
+        return $hashtable
+    }
 }

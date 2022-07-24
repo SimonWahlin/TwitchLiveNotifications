@@ -53,7 +53,7 @@ param(
 . "$PSSCriptRoot/helperFunctions.ps1"
 
 if ([string]::IsNullOrEmpty($ConfigFilePath)) {
-    $ConfigFilePath = "$PSScriptRoot/functionapp.config.json"
+    $ConfigFilePath = "$PSScriptRoot/../functionapp.config.json"
 }
 
 'KeyVaultName' | Assert-ConfigValueOrDefault -ConfigFilePath $ConfigFilePath

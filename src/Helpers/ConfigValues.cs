@@ -4,8 +4,8 @@ internal class ConfigValues
 {
     // List of config values and which environment variable they are stored in.
     public static string DISABLE_NOTIFICATIONS = "DISABLE_NOTIFICATIONS";
-    public static string DiscordOnFollowTemplate = "DiscordOnFollowTemplate";
-    public static string DiscordOnStreamOnlineTemplate = "DiscordOnStreamOnlineTemplate";
+    public static string DiscordTemplateOnFollow = "DiscordTemplateOnFollow";
+    public static string DiscordTemplateOnStreamOnline = "DiscordTemplateOnStreamOnline";
     public static string DiscordWebhookUri = "DiscordWebhookUri";
     public static string queueAddSubscription = "queueAddSubscription";
     public static string queueRemoveSubscription = "queueRemoveSubscription";
@@ -23,8 +23,8 @@ internal class ConfigValues
     public static string TwitterAccessToken = "TwitterAccessToken";
     public static string TwitterAccessTokenSecret = "TwitterAccessTokenSecret";
     public static string TwitterUseV2API = "TwitterUseV2API";
-    public static string TwitterOnFollowTemplate = "TwitterOnFollowTemplate";
-    public static string TwitterOnStreamOnlineTemplate = "TwitterOnStreamOnlineTemplate";
+    public static string TwitterTemplateOnFollow = "TwitterTemplateOnFollow";
+    public static string TwitterTemplateOnStreamOnline = "TwitterTemplateOnStreamOnline";
     public static string tableTwichLiveNotificationsConfiguration = "TwichLiveNotificationsConfiguration";
     public static string QueueServiceStorageAccount = "StorageQueueConnection__queueServiceUri";
     public static string TableServiceStorageAccount = "StorageTableConnection__tableServiceUri";

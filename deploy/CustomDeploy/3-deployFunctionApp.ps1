@@ -17,6 +17,27 @@ param(
     [Parameter(Mandatory)]
     [AllowEmptyString()]
     [string]
+    $DiscordTemplateOnFollow,
+    
+    [Parameter(Mandatory)]
+    [AllowEmptyString()]
+    [string]
+    $DiscordTemplateOnStreamOnline,
+    
+    [Parameter(Mandatory)]
+    [AllowEmptyString()]
+    [string]
+    $TwitterTemplateOnFollow,
+    
+    [Parameter(Mandatory)]
+    [AllowEmptyString()]
+    [string]
+    $TwitterTemplateOnStreamOnline,
+
+    
+    [Parameter(Mandatory)]
+    [AllowEmptyString()]
+    [string]
     $Location,
 
     [Parameter(Mandatory)]
@@ -28,21 +49,25 @@ param(
 . "$PSSCriptRoot/helperFunctions.ps1"
 
 if ([string]::IsNullOrEmpty($ConfigFilePath)) {
-    $ConfigFilePath = "$PSScriptRoot/functionapp.config.json"
+    $ConfigFilePath = "$PSScriptRoot/../functionapp.config.json"
 }
 
 'FunctionAppResourceGroupName', 'FunctionAppName', 'KeyVaultName', 'Location' | Assert-ConfigValueOrDefault -ConfigFilePath $ConfigFilePath
 
 Assert-ResourceGroup -ResourceGroupName $FunctionAppResourceGroupName -Location $Location -ErrorAction 'Stop'
 
-[string]$ParametersFilePath = Resolve-Path "$PSScriptRoot/functionApp.parameters.json"
-[string]$TemplateFilePath = Resolve-Path "$PSScriptRoot/functionApp.bicep"
+[string]$ParametersFilePath = Resolve-Path "$PSScriptRoot/../Templates/functionApp.parameters.json"
+[string]$TemplateFilePath = Resolve-Path "$PSScriptRoot/../Templates/functionApp.bicep"
 $PrincipalId = Get-AzADUser -UserPrincipalName (Get-AzContext).Account.Id -ErrorAction 'Stop' | Select-Object -ExpandProperty Id
 
 $ParametersObject = Import-ParametersFile -Path $ParametersFilePath -ReplaceTokens @{
-    '{{FunctionAppName}}' = $FunctionAppName
-    '{{KeyVaultName}}' = $KeyVaultName
-    '{{YourPrincipalId}}' = $PrincipalId
+    '{{FunctionAppName}}'               = $FunctionAppName
+    '{{KeyVaultName}}'                  = $KeyVaultName
+    '{{YourPrincipalId}}'               = $PrincipalId
+    '{{DiscordTemplateOnFollow}}'       = $DiscordTemplateOnFollow
+    '{{DiscordTemplateOnStreamOnline}}' = $DiscordTemplateOnStreamOnline
+    '{{TwitterTemplateOnFollow}}'       = $TwitterTemplateOnFollow
+    '{{TwitterTemplateOnStreamOnline}}' = $TwitterTemplateOnStreamOnline
 }
 
 Write-Verbose -Message "Deploying resources..." -Verbose
@@ -53,10 +78,9 @@ $newAzResourceGroupDeploymentSplat = @{
     TemplateFile            = $TemplateFilePath
 }
 $Deployment = New-AzResourceGroupDeployment @newAzResourceGroupDeploymentSplat
+Write-Output $Deployment
 if ($Deployment.ProvisioningState -eq 'Succeeded') {
     Set-ConfigValue -ConfigFilePath $ConfigFilePath -Name 'FunctionAppResourceId' -Value $Deployment.Outputs['functionAppId'].Value
     Set-ConfigValue -ConfigFilePath $ConfigFilePath -Name 'StorageAccountName' -Value $Deployment.Outputs['storageAccountName'].Value
-    Set-ConfigValue -ConfigFilePath $ConfigFilePath -Name 'CallBackUri' -Value $Deployment.Outputs['storageAccountName'].Value
+    Set-ConfigValue -ConfigFilePath $ConfigFilePath -Name 'CallBackUri' -Value $Deployment.Outputs['callBackUrl'].Value
 }
-
-return $Deployment

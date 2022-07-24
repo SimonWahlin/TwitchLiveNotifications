@@ -3,13 +3,18 @@ param(
     [Parameter(Mandatory)]
     [AllowEmptyString()]
     [string]
-    $FunctionAppResourceId
+    $FunctionAppResourceId,
+
+    [Parameter(Mandatory)]
+    [AllowEmptyString()]
+    [string]
+    $ConfigFilePath
 )
 
 . "$PSSCriptRoot/helperFunctions.ps1"
 
 if ([string]::IsNullOrEmpty($ConfigFilePath)) {
-    $ConfigFilePath = "$PSScriptRoot/functionapp.config.json"
+    $ConfigFilePath = "$PSScriptRoot/../functionapp.config.json"
 }
 
 'FunctionAppResourceId' | Assert-ConfigValueOrDefault -ConfigFilePath $ConfigFilePath

@@ -20,8 +20,8 @@ public class OnStreamOnline
     private readonly TableClient _configTable;
     private readonly QueueServiceClient _queueClientService;
     private readonly IApiClient _apiClient;
-    private readonly string _discordTemplate = Environment.GetEnvironmentVariable(ConfigValues.DiscordOnStreamOnlineTemplate);
-    private readonly string _twitterTemplate = Environment.GetEnvironmentVariable(ConfigValues.TwitterOnStreamOnlineTemplate);
+    private readonly string _discordTemplate = Environment.GetEnvironmentVariable(ConfigValues.DiscordTemplateOnStreamOnline);
+    private readonly string _twitterTemplate = Environment.GetEnvironmentVariable(ConfigValues.TwitterTemplateOnStreamOnline);
 
     public OnStreamOnline(ILoggerFactory loggerFactory, TableClient configTable, QueueServiceClient queueClientService, IApiClient apiClient)
     {

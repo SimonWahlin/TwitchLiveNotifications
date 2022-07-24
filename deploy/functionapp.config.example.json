@@ -1,20 +1,41 @@
 {
-  "CallBackUri": "<filled automatically>",
-  "DiscordWebhookUri": "<yourvalue>",
-  "FunctionAccessKey": "<filled automatically>",
+  // Globally unique name for function app:
   "FunctionAppName": "<yourvalue>",
-  "FunctionAppResourceGroupName": "<yourvalue>",
-  "FunctionAppResourceId": "<filled automatically>",
+  // Resource group name for function app:
+  "FunctionAppResourceGroupName": "TwitchLiveNotifications",
+  // Globally unique name for key vault containing secrets:
   "KeyVaultName": "<yourvalue>",
-  "KeyVaultResourceGroupName": "<yourvalue>",
-  "KeyVaultResourceId": "<filled automatically>",
+  // Resource group name for key vault:
+  "KeyVaultResourceGroupName": "TwitchLiveNotifications-KV",
+  // Azure region:
   "Location": "westeurope",
-  "StorageAccountName": "<filled automatically>",
+  // Get by rightclicking a channel in Discord and copy the link:
+  "DiscordWebhookUri": "<yourvalue>",
+  // Get by creating an application in Twitch:
   "TwitchClientId": "<yourvalue>",
+  // Get by creating an application in Twitch:
   "TwitchClientSecret": "<yourvalue>",
+  // Random string used to authenticate callback requests from Twitch:
   "TwitchSignatureSecret": "<yourvalue>",
+  // Get by creating an application in Twitter:
   "TwitterAccessToken": "<yourvalue>",
+  // Get by creating an application in Twitter:
   "TwitterAccessTokenSecret": "<yourvalue>",
+  // Get by creating an application in Twitter:
   "TwitterConsumerKey": "<yourvalue>",
-  "TwitterConsumerSecret": "<yourvalue>"
+  // Get by creating an application in Twitter:
+  "TwitterConsumerSecret": "<yourvalue>",
+  // Discord template for new followers:
+  "DiscordTemplateOnFollow": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
+  // Discord tempalte for when a streamer go live:
+  "DiscordTemplateOnStreamOnline": "Live now on Twitch!{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}#PowerShell #PowerShellLive",
+  // Twitter template for new followers:
+  "TwitterTemplateOnFollow": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
+  // Twitter template for when a streamer go live:
+  "TwitterTemplateOnStreamOnline": "Live now on Twitch!{newline}{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}{newline}#PowerShell #PowerShellLive",
+  "CallBackUri": "<filled automatically>",
+  "FunctionAccessKey": "<filled automatically>",
+  "StorageAccountName": "<filled automatically>",
+  "KeyVaultResourceId": "<filled automatically>",
+  "FunctionAppResourceId": "<filled automatically>"
 }

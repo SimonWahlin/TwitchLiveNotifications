@@ -23,7 +23,7 @@ param(
 . "$PSSCriptRoot/helperFunctions.ps1"
 
 if ([string]::IsNullOrEmpty($ConfigFilePath)) {
-    $ConfigFilePath = "$PSScriptRoot/functionapp.config.json"
+    $ConfigFilePath = "$PSScriptRoot/../functionapp.config.json"
 }
 
 'KeyVaultResourceGroupName', 'KeyVaultName', 'Location' | Assert-ConfigValueOrDefault -ConfigFilePath $ConfigFilePath
@@ -37,7 +37,7 @@ Write-Verbose -Message "Deploying resources..." -Verbose
 $newAzResourceGroupDeploymentSplat = @{
     Name                        = 'TwitchLiveNotifications-KeyVault'
     ResourceGroupName           = $KeyVaultResourceGroupName
-    TemplateFile                = "$PSSCriptRoot/keyVault.bicep"
+    TemplateFile                = "$PSSCriptRoot/../Templates/keyVault.bicep"
     keyVaultName                = $KeyVaultName
     secretsOfficerPrincipalId   = $PrincipalId
     secretsOfficerPrincipalType = 'User'

@@ -18,18 +18,23 @@ param(
     [Parameter(Mandatory)]
     [AllowEmptyString()]
     [string]
-    $FunctionAppResourceId
+    $FunctionAppResourceId,
+
+    [Parameter(Mandatory)]
+    [AllowEmptyString()]
+    [string]
+    $ConfigFilePath
 )
 
 . "$PSSCriptRoot/helperFunctions.ps1"
 
 if ([string]::IsNullOrEmpty($ConfigFilePath)) {
-    $ConfigFilePath = "$PSScriptRoot/functionapp.config.json"
+    $ConfigFilePath = "$PSScriptRoot/../functionapp.config.json"
 }
 
 'StorageAccountName', 'FunctionAppResourceId' | Assert-ConfigValueOrDefault -ConfigFilePath $ConfigFilePath
 
-$ProjectPath = [System.IO.Path]::Join("$PSScriptRoot",'.','..','src')
+$ProjectPath = [System.IO.Path]::Join("$PSScriptRoot",'.','..','..','src')
 Push-Location -Path "$ProjectPath" -StackName 'deployCode.ps1'
 
 Get-Item -Path 'bin/publish' -ErrorAction 'SilentlyContinue' | Remove-Item -Recurse -Force
