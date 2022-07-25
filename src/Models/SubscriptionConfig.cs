@@ -23,10 +23,10 @@ public class SubscriptionConfig : ITableEntity
     public string DiscordName { get; set; }
 
     [JsonPropertyName("keywordfilter")]
-    public string KeywordFilter { get; set; }
+    public string[] KeywordFilter { get; set; }
 
     [JsonPropertyName("categoryfilter")]
-    public string CategoryFilter { get; set; }
+    public string[] CategoryFilter { get; set; }
 
     public string TwitchId { get; set; }
 
@@ -47,6 +47,19 @@ public class SubscriptionConfig : ITableEntity
         config.partitionKey = "TwitchSubscriptionConfig";
         config.RowKey = config.TwitchId.ToLower();
         tableClient.UpsertEntity(config, TableUpdateMode.Replace);
+    }
+    public bool ShouldSendNotification(string title, string category)
+    {
+        if (KeywordFilter != null && KeywordFilter.Count() > 0)
+        {
+            return KeywordFilter.Any(s => title.ToLower().Contains(s.ToLower()));
+        }
+        if (CategoryFilter != null && CategoryFilter.Count() > 0)
+        {
+            return CategoryFilter.Any(s => category.ToLower().Contains(s.ToLower()));
+        }
+
+        return false;
     }
 
 }
