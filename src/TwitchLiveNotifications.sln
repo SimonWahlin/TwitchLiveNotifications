@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twitch.Net.Api", "..\depend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twitch.Net.EventSub", "..\dependencies\Twitch.Net\Twitch.Net.EventSub\Twitch.Net.EventSub.csproj", "{58027EDA-C36B-4CB4-AF3D-7337FCF591FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchLiveNotifications.Tests", "..\TwitchLiveNotifications.Tests\TwitchLiveNotifications.Tests.csproj", "{24D4DDCE-7B6D-4111-8D00-9BF37DF823BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{58027EDA-C36B-4CB4-AF3D-7337FCF591FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58027EDA-C36B-4CB4-AF3D-7337FCF591FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58027EDA-C36B-4CB4-AF3D-7337FCF591FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24D4DDCE-7B6D-4111-8D00-9BF37DF823BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24D4DDCE-7B6D-4111-8D00-9BF37DF823BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24D4DDCE-7B6D-4111-8D00-9BF37DF823BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24D4DDCE-7B6D-4111-8D00-9BF37DF823BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
