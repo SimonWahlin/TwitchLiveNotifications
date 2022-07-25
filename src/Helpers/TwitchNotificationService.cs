@@ -44,8 +44,8 @@ internal class TwitchNotificationService : IHostedService
 
     private Task EventOnStreamOnline(NotificationEvent<StreamOnlineNotificationEvent> arg)
     {
-        string queueNameVariable = ConfigValues.queueEventOnSteamOnline;
-        _logger.LogInformation("[SteamOnlineEvent] {BroadcasterUserName}#{BroadcasterIdString} is streaming with steam id: {EventId}", arg.Event.BroadcasterUserName, arg.Event.BroadcasterIdString, arg.Event.Id);
+        string queueNameVariable = ConfigValues.queueEventOnStreamOnline;
+        _logger.LogInformation("[StreamOnlineEvent] {BroadcasterUserName}#{BroadcasterIdString} is streaming with stream id: {EventId}", arg.Event.BroadcasterUserName, arg.Event.BroadcasterIdString, arg.Event.Id);
 
         var message = JsonSerializer.Serialize(arg.Event);
         SendMessage(queueNameVariable, message);
@@ -55,7 +55,7 @@ internal class TwitchNotificationService : IHostedService
     private Task EventOnStreamOffline(NotificationEvent<StreamOfflineNotificationEvent> arg)
     {
         string queueNameVariable = ConfigValues.queueEventOnStreamOffline;
-        _logger.LogInformation("[SteamOfflineEvent] {BroadcasterUserName}#{BroadcasterIdString} stopped streaming.", arg.Event.BroadcasterUserName, arg.Event.BroadcasterIdString);
+        _logger.LogInformation("[StreamOfflineEvent] {BroadcasterUserName}#{BroadcasterIdString} stopped streaming.", arg.Event.BroadcasterUserName, arg.Event.BroadcasterIdString);
 
         var message = JsonSerializer.Serialize(arg.Event);
         SendMessage(queueNameVariable, message);

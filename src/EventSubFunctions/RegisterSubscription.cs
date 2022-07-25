@@ -39,6 +39,7 @@ public class RegisterSubscription
         var configs = JsonSerializer.Deserialize<List<SubscriptionConfig>>(requestBody);
         foreach (var config in configs)
         {
+            _logger.LogInformation("Resolving user: {user}", config.TwitchName);
             var users = await _apiClient.Helix.Users.GetUsersAsync(logins: new List<string>() { config.TwitchName });
             if (users.Successfully != 1)
             {
@@ -52,14 +53,18 @@ public class RegisterSubscription
             config.TwitchId = user.Id;
             SubscriptionConfig.SetTwitchSubscriptionConfiguration(config, _configTable);
 
-            var subscription = new TwitchSubscription()
+            TwitchSubscription subscription;
+            foreach (var type in new string[] { EventSubTypes.StreamOnline, EventSubTypes.StreamOffline })
             {
-                Type = EventSubTypes.StreamOnline,
-                Value = config.TwitchId
-            };
-            var message = JsonSerializer.Serialize(subscription);
-            _logger.LogInformation("Posting message: {message}", message);
-            QueueHelpers.SendMessage(_logger, _queueClientService, "queueAddSubscription", message);
+                subscription = new TwitchSubscription()
+                {
+                    Type = type,
+                    Value = config.TwitchId
+                };
+                var message = JsonSerializer.Serialize(subscription);
+                _logger.LogInformation("Posting message: {message}", message);
+                QueueHelpers.SendMessage(_logger, _queueClientService, "queueAddSubscription", message);
+            }
         }
         response = req.CreateResponse(HttpStatusCode.OK);
         response.Headers.Add("Content-Type", "text/plain; charset=utf-8");

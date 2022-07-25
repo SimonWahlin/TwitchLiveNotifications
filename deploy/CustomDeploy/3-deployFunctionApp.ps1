@@ -13,6 +13,11 @@ param(
     [AllowEmptyString()]
     [string]
     $KeyVaultName,
+    
+    [Parameter(Mandatory)]
+    [AllowEmptyString()]
+    [string]
+    $KeyVaultResourceId,
 
     [Parameter(Mandatory)]
     [AllowEmptyString()]
@@ -52,7 +57,17 @@ if ([string]::IsNullOrEmpty($ConfigFilePath)) {
     $ConfigFilePath = "$PSScriptRoot/../functionapp.config.json"
 }
 
-'FunctionAppResourceGroupName', 'FunctionAppName', 'KeyVaultName', 'Location' | Assert-ConfigValueOrDefault -ConfigFilePath $ConfigFilePath
+@(
+    'FunctionAppResourceGroupName'
+    'FunctionAppName'
+    'KeyVaultName'
+    'KeyVaultResourceId'
+    'DiscordTemplateOnFollow'
+    'DiscordTemplateOnStreamOnline'
+    'TwitterTemplateOnFollow'
+    'TwitterTemplateOnStreamOnline'
+    'Location'
+) | Assert-ConfigValueOrDefault -ConfigFilePath $ConfigFilePath
 
 Assert-ResourceGroup -ResourceGroupName $FunctionAppResourceGroupName -Location $Location -ErrorAction 'Stop'
 
@@ -63,6 +78,7 @@ $PrincipalId = Get-AzADUser -UserPrincipalName (Get-AzContext).Account.Id -Error
 $ParametersObject = Import-ParametersFile -Path $ParametersFilePath -ReplaceTokens @{
     '{{FunctionAppName}}'               = $FunctionAppName
     '{{KeyVaultName}}'                  = $KeyVaultName
+    '{{KeyVaultResourceId}}'            = $KeyVaultResourceId
     '{{YourPrincipalId}}'               = $PrincipalId
     '{{DiscordTemplateOnFollow}}'       = $DiscordTemplateOnFollow
     '{{DiscordTemplateOnStreamOnline}}' = $DiscordTemplateOnStreamOnline

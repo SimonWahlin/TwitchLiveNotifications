@@ -42,4 +42,5 @@ public class SubscriptionConfig : ITableEntity
         config.RowKey = config.TwitchId.ToLower();
         tableClient.UpsertEntity(config, TableUpdateMode.Replace);
     }
+
 }

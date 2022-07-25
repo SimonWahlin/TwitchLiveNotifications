@@ -52,9 +52,9 @@ var packageName = 'TwitchLiveNotifications.zip'
 var deployContainerName = 'deploy'
 var packageUri = '${storageAccount.properties.primaryEndpoints.blob}${deployContainerName}/${packageName}'
 
-var keyVaultSubscriptionId = keyVaultResourceId == '' ? '' : split(keyVaultResourceId,'/')[1]
-var keyVaultResourceGroup = keyVaultResourceId == '' ? '' : split(keyVaultResourceId,'/')[3]
-var keyVaultResourceName = keyVaultResourceId == '' ? '' : split(keyVaultResourceId,'/')[7]
+var keyVaultSubscriptionId = keyVaultResourceId == '' ? '' : split(keyVaultResourceId,'/')[2]
+var keyVaultResourceGroup = keyVaultResourceId == '' ? '' : split(keyVaultResourceId,'/')[4]
+var keyVaultResourceName = keyVaultResourceId == '' ? '' : split(keyVaultResourceId,'/')[8]
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
   name: logAnalyticsName
@@ -269,6 +269,9 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
       scmType: 'None'
     }
     containerSize: 1536 // not used any more, but portal complains without it
+  }
+  tags: {
+    'hidden-link: /app-insights-resource-id': appInsights.id
   }
 }
 
