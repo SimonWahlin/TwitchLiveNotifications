@@ -40,6 +40,7 @@ public class OnStreamOnline
         }
 
         var channelConfig = SubscriptionConfig.GetTwitchSubscriptionConfiguration(notification.BroadcasterIdString, _configTable);
+
         var streamUri = $"https://twitch.tv/{notification.BroadcasterUserName}";
         var channels = await _apiClient.Helix.Channels.GetChannelsAsync(
             ids: new List<string>
@@ -47,43 +48,46 @@ public class OnStreamOnline
                 notification.BroadcasterIdString
             });
         var channel = channels.Channels.FirstOrDefault();
-        string streamerName;
-
-        if (!string.IsNullOrEmpty(_twitterTemplate))
+        if (channelConfig.ShouldSendNotification(channel.Title, channel.GameName))
         {
-            streamerName = string.IsNullOrEmpty(channelConfig.TwitterName) ? notification.BroadcasterUserName : $"@{channelConfig.TwitterName}";
-            var tweetMessage = new TweetMessage()
-            {
-                Text = BuildMessage(_twitterTemplate, streamerName, streamUri, channel.GameName, channel.Title)
-            };
-            QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
 
+            string streamerName;
+
+            if (!string.IsNullOrEmpty(_twitterTemplate))
+            {
+                streamerName = string.IsNullOrEmpty(channelConfig.TwitterName) ? notification.BroadcasterUserName : $"@{channelConfig.TwitterName}";
+                var tweetMessage = new TweetMessage()
+                {
+                    Text = BuildMessage(_twitterTemplate, streamerName, streamUri, channel.GameName, channel.Title)
+                };
+                QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
+
+            }
+
+            if (!string.IsNullOrEmpty(_discordTemplate))
+            {
+                streamerName = string.IsNullOrEmpty(channelConfig.DiscordName) ? notification.BroadcasterUserName : $"<@{channelConfig.DiscordName}>";
+                var discordMessage = new DiscordMessage()
+                {
+                    Content = BuildMessage(_discordTemplate, streamerName, streamUri, channel.GameName, channel.Title)
+                };
+                QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueDiscordHandler, JsonSerializer.Serialize(discordMessage));
+            }
+
+            await StreamStatusEntry.SetTwitchStreamStatusAsync(
+                new StreamStatusEntry()
+                {
+                    BroadCasterId = notification.BroadcasterIdString,
+                    BoradCasterName = notification.BroadcasterUserName,
+                    StreamUri = streamUri,
+                    Game = channel.GameName,
+                    Title = channel.Title,
+                    StartedAt = notification.StartedAt,
+                    Status = StreamStatus.Online
+                },
+                _configTable
+            );
         }
-
-        if (!string.IsNullOrEmpty(_discordTemplate))
-        {
-            streamerName = string.IsNullOrEmpty(channelConfig.DiscordName) ? notification.BroadcasterUserName : $"<@{channelConfig.DiscordName}>";
-            var discordMessage = new DiscordMessage()
-            {
-                Content = BuildMessage(_discordTemplate, streamerName, streamUri, channel.GameName, channel.Title)
-            };
-            QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueDiscordHandler, JsonSerializer.Serialize(discordMessage));
-        }
-
-        await StreamStatusEntry.SetTwitchStreamStatusAsync(
-            new StreamStatusEntry()
-            {
-                BroadCasterId = notification.BroadcasterIdString,
-                BoradCasterName = notification.BroadcasterUserName,
-                StreamUri = streamUri,
-                Game = channel.GameName,
-                Title = channel.Title,
-                StartedAt = notification.StartedAt,
-                Status = StreamStatus.Online
-            },
-            _configTable
-        );
-
         return notification;
     }
 
