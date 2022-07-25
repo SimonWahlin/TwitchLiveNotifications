@@ -59,7 +59,7 @@ public class SubscriptionConfig : ITableEntity
             return CategoryFilter.Any(s => category.ToLower().Contains(s.ToLower()));
         }
 
-        return false;
+        return true;
     }
 
 }

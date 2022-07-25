@@ -10,6 +10,7 @@ namespace TwitchLiveNotifications.Tests
         [InlineData("Just chatting", "Science & technologies", new[] { "blazor" }, new[] { "Science & technologies" }, false)]
         [InlineData("Just chatting", "Science & technologies", new string[0], new[] { "Science & technologies" }, true)]
         [InlineData("Just chatting", "Science & technologies", new string[0], new[] { "No match" }, false)]
+        [InlineData("Just chatting", "Science & technologies", new string[0], new string[0], true)]
         public void ShouldSendNotificationTests(string title, string category, string[] keywords, string[] cateories, bool expected)
         {
             SubscriptionConfig config = new() { CategoryFilter = cateories, KeywordFilter = keywords };
