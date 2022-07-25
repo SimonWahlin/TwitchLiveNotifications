@@ -22,6 +22,12 @@ public class SubscriptionConfig : ITableEntity
     [JsonPropertyName("discordname")]
     public string DiscordName { get; set; }
 
+    [JsonPropertyName("keywordfilter")]
+    public string KeywordFilter { get; set; }
+
+    [JsonPropertyName("categoryfilter")]
+    public string CategoryFilter { get; set; }
+
     public string TwitchId { get; set; }
 
     public string PartitionKey { get => partitionKey; set => partitionKey = value; }
