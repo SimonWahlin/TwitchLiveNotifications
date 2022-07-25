@@ -14,50 +14,41 @@ using TwitchLiveNotifications.Models;
 
 namespace TwitchLiveNotifications.EventFunctions;
 
-public class OnStreamOnline
+public class OnStreamOffline
 {
     private readonly ILogger _logger;
     private readonly TableClient _configTable;
     private readonly QueueServiceClient _queueClientService;
     private readonly IApiClient _apiClient;
-    private readonly string _discordTemplate = Environment.GetEnvironmentVariable(ConfigValues.DiscordTemplateOnStreamOnline);
-    private readonly string _twitterTemplate = Environment.GetEnvironmentVariable(ConfigValues.TwitterTemplateOnStreamOnline);
+    private readonly string _discordTemplate = Environment.GetEnvironmentVariable(ConfigValues.DiscordTemplateOnStreamOffline);
+    private readonly string _twitterTemplate = Environment.GetEnvironmentVariable(ConfigValues.TwitterTemplateOnStreamOffline);
 
-    public OnStreamOnline(ILoggerFactory loggerFactory, TableClient configTable, QueueServiceClient queueClientService, IApiClient apiClient)
+    public OnStreamOffline(ILoggerFactory loggerFactory, TableClient configTable, QueueServiceClient queueClientService, IApiClient apiClient)
     {
-        _logger = loggerFactory.CreateLogger<OnFollowed>();
+        _logger = loggerFactory.CreateLogger<OnStreamOffline>();
         _configTable = configTable;
         _queueClientService = queueClientService;
         _apiClient = apiClient;
     }
 
-    [Function("OnStreamOnline")]
-    public async Task<StreamOnlineNotificationEvent> Run([QueueTrigger("%queueEventOnStreamOnline%", Connection = "StorageQueueConnection")] StreamOnlineNotificationEvent notification)
+    [Function("OnStreamOffline")]
+    public async Task<StreamOfflineNotificationEvent> Run([QueueTrigger("%queueEventOnStreamOffline%", Connection = "StorageQueueConnection")] StreamOfflineNotificationEvent notification)
     {
-        if (notification.Type != "live")
-        {
-            return notification;
-        }
-
         var channelConfig = SubscriptionConfig.GetTwitchSubscriptionConfiguration(notification.BroadcasterIdString, _configTable);
+        var streamStatus = StreamStatusEntry.GetTwitchStreamStatus(notification.BroadcasterIdString, _configTable);
         var streamUri = $"https://twitch.tv/{notification.BroadcasterUserName}";
-        var channels = await _apiClient.Helix.Channels.GetChannelsAsync(
-            ids: new List<string>
-            {
-                notification.BroadcasterIdString
-            });
-        var channel = channels.Channels.FirstOrDefault();
-        string streamerName;
+        var gamename = streamStatus?.Game ?? "unknown";
+        var title = streamStatus?.Title ?? "unknown";
 
+        string streamerName;
         if (!string.IsNullOrEmpty(_twitterTemplate))
         {
             streamerName = string.IsNullOrEmpty(channelConfig.TwitterName) ? notification.BroadcasterUserName : $"@{channelConfig.TwitterName}";
             var tweetMessage = new TweetMessage()
             {
-                Text = BuildMessage(_twitterTemplate, streamerName, streamUri, channel.GameName, channel.Title)
+                Text = BuildMessage(_twitterTemplate, streamerName, streamUri, gamename, title)
             };
             QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
-
         }
 
         if (!string.IsNullOrEmpty(_discordTemplate))
@@ -65,26 +56,18 @@ public class OnStreamOnline
             streamerName = string.IsNullOrEmpty(channelConfig.DiscordName) ? notification.BroadcasterUserName : $"<@{channelConfig.DiscordName}>";
             var discordMessage = new DiscordMessage()
             {
-                Content = BuildMessage(_discordTemplate, streamerName, streamUri, channel.GameName, channel.Title)
+                Content = BuildMessage(_discordTemplate, streamerName, streamUri, gamename, title)
             };
             QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueDiscordHandler, JsonSerializer.Serialize(discordMessage));
         }
 
-        await StreamStatusEntry.SetTwitchStreamStatusAsync(
-            new StreamStatusEntry()
-            {
-                BroadCasterId = notification.BroadcasterIdString,
-                BoradCasterName = notification.BroadcasterUserName,
-                StreamUri = streamUri,
-                Game = channel.GameName,
-                Title = channel.Title,
-                StartedAt = notification.StartedAt,
-                Status = StreamStatus.Online
-            },
-            _configTable
-        );
+        if(streamStatus != null)
+        {
+            streamStatus.Status = StreamStatus.Offline;
+            await StreamStatusEntry.SetTwitchStreamStatusAsync(streamStatus,_configTable);
+        }
 
-        return notification;
+       return notification;
     }
 
     private static string BuildMessage(string template, string streamer, string streamuri, string gamename, string title)

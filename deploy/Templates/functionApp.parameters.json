@@ -15,9 +15,10 @@
         "DiscordTemplateOnStreamOnline": "{{DiscordTemplateOnStreamOnline}}",
         "DiscordWebhookUri": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=DiscordWebhookUri)",
         "queueAddSubscription": "addsubscription",
+        "queueRemoveSubscription": "removesubscription",
         "queueDiscordHandler": "discordmessage",
         "queueEventOnFollow": "onfollowevent",
-        "queueEventOnSteamOnline": "onstreamonlineevent",
+        "queueEventOnStreamOnline": "onstreamonlineevent",
         "queueEventOnStreamOffline": "onstreamofflineevent",
         "queueTwitterHandler": "twittertweet",
         "Twitch_ClientId": "@Microsoft.KeyVault(VaultName={{KeyVaultName}};SecretName=TwitchClientId)",
@@ -31,6 +32,9 @@
         "TwitterTemplateOnStreamOnline": "{{TwitterTemplateOnStreamOnline}}"
       }
     },
+    "keyVaultResourceId": {
+      "value": "{{KeyVaultResourceId}}"
+    },
     "deployPrincipalId": {
       "value": "{{YourPrincipalId}}"
     },
@@ -41,11 +45,11 @@
       "value": [
         "addsubscription",
         "removesubscription",
-        "discordmessagequeue",
+        "discordmessage",
         "onfollowevent",
-        "streamonlinequeue",
-        "streamofflinequeue",
-        "twittertweetqueue"
+        "onstreamonlineevent",
+        "onstreamofflineevent",
+        "twittertweet"
       ]
     },
     "tableList": {

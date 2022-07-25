@@ -5,18 +5,18 @@ using Twitch.Net.EventSub;
 
 namespace TwitchLiveNotifications.EventSubFunctions;
 
-public class RemoveEventSub
+public class RemoveSubscription
 {
     private readonly ILogger _logger;
     private readonly IEventSubService2 _eventSubService;
 
-    public RemoveEventSub(ILoggerFactory loggerFactory, IEventSubService2 eventSubService)
+    public RemoveSubscription(ILoggerFactory loggerFactory, IEventSubService2 eventSubService)
     {
-        _logger = loggerFactory.CreateLogger<AddEventSub>();
+        _logger = loggerFactory.CreateLogger<RemoveSubscription>();
         _eventSubService = eventSubService;
     }
 
-    [Function("RemoveEventSub")]
+    [Function("RemoveSubscription")]
     public async Task<string> Run([QueueTrigger("%queueRemoveSubscription%", Connection = "StorageQueueConnection")] string id)
     {
         var result = await _eventSubService.Unsubscribe(id);

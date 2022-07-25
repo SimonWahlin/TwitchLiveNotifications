@@ -13,7 +13,7 @@
     "queueRemoveSubscription": "removesubscription",
     "queueDiscordHandler": "discordmessagequeue",
     "queueEventOnFollow": "onfollowevent",
-    "queueEventOnSteamOnline": "streamonlinequeue",
+    "queueEventOnStreamOnline": "streamonlinequeue",
     "queueEventOnStreamOffline": "streamofflinequeue",
     "queueTwitterHandler": "twittertweetqueue",
     "Twitch_CallbackUrl": "https://<yourdomain>.ngrok.io/api/SubscriptionCallBack",

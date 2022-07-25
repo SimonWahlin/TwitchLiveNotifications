@@ -32,6 +32,7 @@ $deployFunctionAppSplat = @{
     FunctionAppResourceGroupName = ''
     FunctionAppName = ''
     KeyVaultName = ''
+    KeyVaultResourceId = ''
     DiscordTemplateOnFollow = ''
     DiscordTemplateOnStreamOnline = ''
     TwitterTemplateOnFollow = ''

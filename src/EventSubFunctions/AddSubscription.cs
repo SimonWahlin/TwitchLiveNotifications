@@ -7,20 +7,20 @@ using TwitchLiveNotifications.Models;
 
 namespace TwitchLiveNotifications.EventSubFunctions;
 
-public class AddEventSub
+public class AddSubscription
 {
     private readonly ILogger _logger;
     private readonly IEventSubService2 _eventSubService;
     private readonly EventSubBuilder _eventSubBuilder;
 
-    public AddEventSub(ILoggerFactory loggerFactory, IEventSubService2 eventSubService, EventSubBuilder subBuilder)
+    public AddSubscription(ILoggerFactory loggerFactory, IEventSubService2 eventSubService, EventSubBuilder subBuilder)
     {
-        _logger = loggerFactory.CreateLogger<AddEventSub>();
+        _logger = loggerFactory.CreateLogger<AddSubscription>();
         _eventSubService = eventSubService;
         _eventSubBuilder = subBuilder;
     }
 
-    [Function("AddEventSub")]
+    [Function("AddSubscription")]
     public async Task<TwitchSubscription> Run([QueueTrigger("%queueAddSubscription%", Connection = "StorageQueueConnection")] TwitchSubscription subscription)
     {
         var model = _eventSubBuilder.Build(subscription.Type, subscription.Value);

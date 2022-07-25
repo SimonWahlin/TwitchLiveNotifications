@@ -6,12 +6,13 @@ internal class ConfigValues
     public static string DISABLE_NOTIFICATIONS = "DISABLE_NOTIFICATIONS";
     public static string DiscordTemplateOnFollow = "DiscordTemplateOnFollow";
     public static string DiscordTemplateOnStreamOnline = "DiscordTemplateOnStreamOnline";
+    public static string DiscordTemplateOnStreamOffline = "DiscordTemplateOnStreamOffline";
     public static string DiscordWebhookUri = "DiscordWebhookUri";
     public static string queueAddSubscription = "queueAddSubscription";
     public static string queueRemoveSubscription = "queueRemoveSubscription";
     public static string queueDiscordHandler = "queueDiscordHandler";
     public static string queueEventOnFollow = "queueEventOnFollow";
-    public static string queueEventOnSteamOnline = "queueEventOnSteamOnline";
+    public static string queueEventOnStreamOnline = "queueEventOnStreamOnline";
     public static string queueEventOnStreamOffline = "queueEventOnStreamOffline";
     public static string queueTwitterHandler = "queueTwitterHandler";
     public static string Twitch_CallbackUrl = "Twitch_CallbackUrl";
@@ -25,6 +26,7 @@ internal class ConfigValues
     public static string TwitterUseV2API = "TwitterUseV2API";
     public static string TwitterTemplateOnFollow = "TwitterTemplateOnFollow";
     public static string TwitterTemplateOnStreamOnline = "TwitterTemplateOnStreamOnline";
+    public static string TwitterTemplateOnStreamOffline = "TwitterTemplateOnStreamOffline";
     public static string tableTwichLiveNotificationsConfiguration = "TwichLiveNotificationsConfiguration";
     public static string QueueServiceStorageAccount = "StorageQueueConnection__queueServiceUri";
     public static string TableServiceStorageAccount = "StorageTableConnection__tableServiceUri";
