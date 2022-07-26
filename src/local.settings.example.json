@@ -2,8 +2,10 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "StorageQueueConnection__queueServiceUri": "https://<storageaccountname>.queue.core.windows.net/",
-    "StorageTableConnection__tableServiceUri": "https://<storageaccountname>.table.core.windows.net/",
+    //"StorageQueueConnection__queueServiceUri": "https://<storageaccountname>.queue.core.windows.net/",
+    //"StorageTableConnection__tableServiceUri": "https://<storageaccountname>.table.core.windows.net/",
+    "StorageQueueConnection": "UseDevelopmentStorage=true",
+    "StorageTableConnection": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     "DISABLE_NOTIFICATIONS": "false",
     "DiscordTemplateOnFollow": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
