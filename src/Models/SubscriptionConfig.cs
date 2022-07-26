@@ -2,6 +2,7 @@
 using Azure.Data.Tables;
 using System;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace TwitchLiveNotifications.Models;
@@ -22,11 +23,25 @@ public class SubscriptionConfig : ITableEntity
     [JsonPropertyName("discordname")]
     public string DiscordName { get; set; }
 
-    [JsonPropertyName("keywordfilter")]
-    public string[] KeywordFilter { get; set; }
+    public string JoinedTitleFilters
+    {
+        get { return string.Join(',', TitleFilters); }
+        set { TitleFilters = value.Split(','); }
+    }
 
-    [JsonPropertyName("categoryfilter")]
-    public string[] CategoryFilter { get; set; }
+    public string JoinedCategoryFilters
+    {
+        get { return string.Join(',', CategoryFilters); }
+        set { CategoryFilters = value.Split(','); }
+    }
+
+    [IgnoreDataMember]
+    [JsonPropertyName("titlefilters")]
+    public string[] TitleFilters { get; set; }
+
+    [IgnoreDataMember]
+    [JsonPropertyName("categoryfilters")]
+    public string[] CategoryFilters { get; set; }
 
     public string TwitchId { get; set; }
 
@@ -50,13 +65,13 @@ public class SubscriptionConfig : ITableEntity
     }
     public bool ShouldSendNotification(string title, string category)
     {
-        if (KeywordFilter != null && KeywordFilter.Count() > 0)
+        if (TitleFilters != null && TitleFilters.Count() > 0)
         {
-            return KeywordFilter.Any(s => title.ToLower().Contains(s.ToLower()));
+            return TitleFilters.Any(s => title.ToLower().Contains(s.ToLower()));
         }
-        if (CategoryFilter != null && CategoryFilter.Count() > 0)
+        if (CategoryFilters != null && CategoryFilters.Count() > 0)
         {
-            return CategoryFilter.Any(s => category.ToLower().Contains(s.ToLower()));
+            return CategoryFilters.Any(s => category.ToLower().Contains(s.ToLower()));
         }
 
         return true;
