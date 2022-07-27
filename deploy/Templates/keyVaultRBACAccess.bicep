@@ -19,3 +19,5 @@ resource roleAssignmentKeyVaultSecrets 'Microsoft.Authorization/roleAssignments@
     principalType: 'ServicePrincipal'
   }
 }
+
+output KeyVaultId string = keyvault.id

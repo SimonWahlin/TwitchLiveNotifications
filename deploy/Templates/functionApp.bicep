@@ -39,6 +39,9 @@ param queueList array = []
 @description('List of tables to be created')
 param tableList array = []
 
+@description('Quota of GB-seconds that can be used each day.')
+param dailyMemoryTimeQuota int = 60000
+
 param location string = resourceGroup().location
 
 var hostingPlanName = '${functionAppName}-plan'
@@ -261,6 +264,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
   properties: {
     enabled: true
     httpsOnly: true
+    dailyMemoryTimeQuota: dailyMemoryTimeQuota
     serverFarmId: hostingPlan.id
     siteConfig: {
       ftpsState: 'Disabled'
@@ -406,5 +410,5 @@ output PrincipalIdRef string = reference(functionApp.id, '2020-06-01', 'Full').i
 output PrincipalTenantId string = functionApp.identity.tenantId
 output PrincipalId string = functionApp.identity.principalId
 output StorageAccountName string = storageAccountName
-output KeyVaultName string = keyVaultName
 output PackageUri string = packageUri
+output KeyVaultResourceId string = externalKeyVaultAccess.outputs.KeyVaultId
