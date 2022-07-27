@@ -12,9 +12,9 @@ $dotnetArgs = @(
     'TwitchLiveNotifications.csproj'
     '--output', 'bin/publish'
     '--configuration', 'release'
-    '--no-self-contained'
-    '--runtime', 'linux-x64'
-    '-p:PublishReadyToRun=true'
+    # '--no-self-contained'
+    # '--runtime', 'linux-x64'
+    # '-p:PublishReadyToRun=true'
     # '-p:PublishTrimmed=true'
     [string]::IsNullOrEmpty($Version) ? '' : "-p:Version=$Version"
 )
