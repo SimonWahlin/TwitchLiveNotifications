@@ -82,6 +82,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      # This step will cache the dependencies folder so it won't be downloaded each time.
+      - name: Setup cache for dependencies
+        id: dependencycache
+        uses: actions/cache@v2
+        with:
+          path: |
+            dependencies
+          key: ${{ hashFiles('Scripts\Dependencies.ps1','.TwitchNetCommit') }}
+        
+      - name: Download required assemblies
+        if: steps.dependencycache.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: ./Scripts/Dependencies.ps1
+
       - name: .NET Test
         shell: pwsh
         run: dotnet test TwitchLiveNotifications.Tests\TwitchLiveNotifications.Tests.csproj
