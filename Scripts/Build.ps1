@@ -7,6 +7,7 @@ $ProjectPath = "$PSSCriptRoot/../src"
 Push-Location -Path "$ProjectPath" -StackName 'deployCode.ps1'
 
 Get-Item -Path 'bin/publish' -ErrorAction 'SilentlyContinue' | Remove-Item -Recurse -Force
+Get-Item -Path 'bin/TwitchLiveNotifications.zip' -ErrorAction 'SilentlyContinue' | Remove-Item -Force
 $dotnetArgs = @(
     'publish'
     'TwitchLiveNotifications.csproj'
@@ -23,6 +24,6 @@ dotnet $dotnetArgs
 # dotnet publish --configuration release --runtime linux-x64  --output bin/publish
 
 Set-Location -Path 'bin/publish'
-Compress-Archive -Path '.\*' -DestinationPath '..\TwitchLiveNotifications.zip' -Force
+[System.IO.Compression.ZipFile]::CreateFromDirectory("$PSSCriptRoot/../src/bin/publish","$PSSCriptRoot/../src/bin/TwitchLiveNotifications.zip",[System.IO.Compression.CompressionLevel]::Optimal, $false)
 
 Pop-Location -StackName 'deployCode.ps1'
