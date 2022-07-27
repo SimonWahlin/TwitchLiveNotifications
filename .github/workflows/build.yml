@@ -1,0 +1,101 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build deploy package
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+    #tags: [v*] # A tag starting with v* will trigger a new release build
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: Setup.NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0'
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.10
+        with:
+          versionSpec: '5.x'
+
+      - name: Determine Version
+        id:   gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.10
+        
+      # This step will cache the dependencies folder so it won't be downloaded each time.
+      - name: Setup cache for dependencies
+        id: dependencycache
+        uses: actions/cache@v2
+        with:
+          path: |
+            dependencies
+          key: ${{ hashFiles('Scripts\Dependencies.ps1','.TwitchNetCommit') }}
+        
+      - name: Download required assemblies
+        if: steps.dependencycache.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: ./Scripts/Dependencies.ps1
+
+      - name: Build module
+        shell: pwsh
+        run: ./Scripts/Build.ps1 -Version "${{steps.gitversion.outputs.LegacySemVerPadded}}"
+
+      - name: Publish build artifacts
+        if: (!startsWith(github.ref, 'refs/tags/v'))
+        uses: actions/upload-artifact@v3
+        with:
+          name: TwitchLiveNotifications
+          path: |
+            src/bin/publish/*
+
+      - name: Publish release artifacts
+        if: (startsWith(github.ref, 'refs/tags/v'))
+        uses: actions/upload-artifact@v3
+        with:
+          name: TwitchLiveNotifications
+          path: |
+            src/bin/TwitchLiveNotifications.zip
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: .NET Test
+        shell: pwsh
+        run: dotnet test TwitchLiveNotifications.Tests\TwitchLiveNotifications.Tests.csproj
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: TwitchLiveNotifications
+
+    - name: Publish assets
+      uses: softprops/action-gh-release@v1
+      with:
+        files: TwitchLiveNotifications.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
