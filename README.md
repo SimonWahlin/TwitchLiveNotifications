@@ -29,7 +29,13 @@ To install the exact versions I've tested with, run the following code:
          }
       ) | Foreach-Object {Install-Module @_  -Scope CurrentUser -Force}
       ```
-3. The project has a dependency on a fork of [Twitch.Net](https://github.com/iXyles/Twitch.Net). It needs to be cloned to the dependencies folder.  
+3. Install Bicep by running this command and agree to "Do you agree to all the source agreements terms" :
+
+```powershell
+winget install -e --id Microsoft.Bicep
+```
+
+4. The project has a dependency on a fork of [Twitch.Net](https://github.com/iXyles/Twitch.Net). It needs to be cloned to the dependencies folder.  
    Make sure you are at the root of the project when running the following code:
    ```powershell
    New-Item -Path "dependencies" -ItemType Directory
@@ -41,11 +47,24 @@ To install the exact versions I've tested with, run the following code:
    ```
 ## Configuration
 
-The deployment requires a set of configuration values. Copy the file `Deploy/functionapp.config.example.json` to `Deploy/functionapp.config.json` and fill in the values marked as `<yourvalue>`.  
-
+The deployment requires a set of configuration values. 
+1. Copy the file `Deploy/functionapp.config.example.json` to `Deploy/functionapp.config.json` and fill in the values marked as `<yourvalue>`.  
+2. Make changes to the `Config/subscriptions.json` to include the channels we which to subscribe to.
+ 
 > **Note** The solution uses the Twitter V1 API to post tweets, your Twitter developer account needs to have access to the V1 API and your tokens need to be set up with write permissions.
 >
 >Settings in `Deploy/Templates/functionApp.parameters.json` can be modified to further customize the deployment. Especially the settings `DiscordTemplateOnStreamOnline` and `TwitterTemplateOnStreamOnline` can be changed to customize the messages posted.  
+
+## Login to Azure
+
+To get started we need to log in to the Azure account we want to deploy to.
+1. Open Windows Terminal and navigate to the deploy-folder.
+2. To login to the Azure account run the following command:
+```powershell
+Connect-AZAccount
+```
+This will open a new windows where we can enter our credentials.
+Now we are ready to deploy the solution.
 
 ## Deploy the solution
 
