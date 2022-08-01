@@ -2,11 +2,11 @@
   // Globally unique name for function app:
   "FunctionAppName": "<yourvalue>",
   // Resource group name for function app:
-  "FunctionAppResourceGroupName": "TwitchLiveNotifications",
+  "FunctionAppResourceGroupName": "<yourvalue>",
   // Globally unique name for key vault containing secrets:
   "KeyVaultName": "<yourvalue>",
   // Resource group name for key vault:
-  "KeyVaultResourceGroupName": "TwitchLiveNotifications-KV",
+  "KeyVaultResourceGroupName": "<yourvalue>",
   // Azure region:
   "Location": "westeurope",
   // Get by rightclicking a channel in Discord and copy the link:
@@ -28,11 +28,11 @@
   // Discord template for new followers:
   "DiscordTemplateOnFollow": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
   // Discord tempalte for when a streamer go live:
-  "DiscordTemplateOnStreamOnline": "Live now on Twitch!{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}#PowerShell #PowerShellLive",
+  "DiscordTemplateOnStreamOnline": "Live now on Twitch!{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}",
   // Twitter template for new followers:
   "TwitterTemplateOnFollow": "{follower} is now following {streamer} since {followedat}!{newline}Go check them out at {streamuri}",
   // Twitter template for when a streamer go live:
-  "TwitterTemplateOnStreamOnline": "Live now on Twitch!{newline}{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}{newline}#PowerShell #PowerShellLive",
+  "TwitterTemplateOnStreamOnline": "Live now on Twitch!{newline}{newline}{streamer} is streaming{newline}{newline}Join them live at: {streamUri}{newline}{newline}",
   "CallBackUri": "<filled automatically>",
   "FunctionAccessKey": "<filled automatically>",
   "StorageAccountName": "<filled automatically>",
