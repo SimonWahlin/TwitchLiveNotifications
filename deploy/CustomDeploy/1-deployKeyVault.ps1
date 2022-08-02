@@ -30,7 +30,7 @@ if ([string]::IsNullOrEmpty($ConfigFilePath)) {
 
 Assert-ResourceGroup -ResourceGroupName $KeyVaultResourceGroupName -Location $Location -ErrorAction 'Stop'
 
-$PrincipalId = Get-AzADUser -UserPrincipalName (Get-AzContext).Account.Id -ErrorAction 'Stop' | Select-Object -ExpandProperty Id
+$PrincipalId = Invoke-AzRest -Uri 'https://graph.microsoft.com/v1.0/me' | Select-Object -ExpandProperty Content | ConvertFrom-Json | Select-Object -ExpandProperty Id
 
 Write-Verbose -Message "Deploying resources..." -Verbose
 
