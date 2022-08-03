@@ -26,22 +26,34 @@ public class SubscriptionConfig : ITableEntity
     public string JoinedTitleFilters
     {
         get { return string.Join(',', TitleFilters); }
-        set { TitleFilters = value.Split(','); }
+        set
+        {
+            if (value != null)
+            {
+                TitleFilters = value.Split(',');
+            }
+        }
     }
 
     public string JoinedCategoryFilters
     {
         get { return string.Join(',', CategoryFilters); }
-        set { CategoryFilters = value.Split(','); }
+        set
+        {
+            if (value != null)
+            {
+                CategoryFilters = value.Split(',');
+            }
+        }
     }
 
     [IgnoreDataMember]
     [JsonPropertyName("titlefilters")]
-    public string[] TitleFilters { get; set; }
+    public string[] TitleFilters { get; set; } = new string[0];
 
     [IgnoreDataMember]
     [JsonPropertyName("categoryfilters")]
-    public string[] CategoryFilters { get; set; }
+    public string[] CategoryFilters { get; set; } = new string[0];
 
     public string TwitchId { get; set; }
 
