@@ -13,6 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLiveNotifications.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twitch.Net.Shared", "..\dependencies\Twitch.Net\Twitch.Net.Shared\Twitch.Net.Shared.csproj", "{DB5A90F9-BD57-49D5-B40E-EB1FEA82D1EA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BD9B2DFE-3FCD-439B-8D35-646C9A39F55A}"
+	ProjectSection(SolutionItems) = preProject
+		FunctionCalls.http = FunctionCalls.http
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
