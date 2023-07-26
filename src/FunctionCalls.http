@@ -5,7 +5,21 @@ GET {{DukaUrl}}/GetSubscriptions
 
 ###
 
-POST {{DukaUrl}}/RegisterSubscriptions
+POST {{DukaUrl}}/RegisterSubscription
+Content-Type: application/json
+
+[
+    {
+      "twitchname": "thindal",
+      "twittername": "ericjohansson",
+      "discordname": "227552571450064897"
+    },
+    {
+      "twitchname": "NapalmCodes",
+      "twittername": "supervause",
+      "discordname": "323898314149986305"
+    }
+]
 
 ###
 POST {{DukaUrl}}/ClearSubscriptions
@@ -13,17 +27,43 @@ POST {{DukaUrl}}/ClearSubscriptions
 
 
 ###
-
 GET {{DukaUrl}}/GetOnlineChannels
 
 ###
 
 POST {{DukaUrl}}/ResolveChannelId
+Content-Type: application/json
+
+[
+    "thindal",
+    "NapalmCodes"
+]
 
 ###
 POST {{DukaUrl}}/ResolveUserId
+Content-Type: application/json
+
+[
+    "thindal",
+    "NapalmCodes"
+]
 
 ###
+# Notification from twitch
 POST {{DukaUrl}}/SubscriptionCallBack
+Twitch-Eventsub-Message-Type: notification
+Twitch-Eventsub-Message-Id: 1
+
+###
+# webhook_callback_verification from twitch
+POST {{DukaUrl}}/SubscriptionCallBack
+Twitch-Eventsub-Message-Type: webhook_callback_verification
+Twitch-Eventsub-Message-Id: 2
+
+###
+# revocation from twitch
+POST {{DukaUrl}}/SubscriptionCallBack
+Twitch-Eventsub-Message-Type: revocation
+Twitch-Eventsub-Message-Id: 3
 
 
