@@ -1,11 +1,11 @@
-@DukaUrl=http://localhost:7071/api
+@BaseUrl=http://localhost:7071/api
 
-GET {{DukaUrl}}/GetSubscriptions
-```
+# Get a list of all registered subscriptions
+GET {{BaseUrl}}/GetSubscriptions
 
 ###
-
-POST {{DukaUrl}}/RegisterSubscription
+# Register a collection of new subscriptions.
+POST {{BaseUrl}}/RegisterSubscription
 Content-Type: application/json
 
 [
@@ -22,16 +22,16 @@ Content-Type: application/json
 ]
 
 ###
-POST {{DukaUrl}}/ClearSubscriptions
-```
-
-
-###
-GET {{DukaUrl}}/GetOnlineChannels
+# Remove all subscriptions from the system
+POST {{BaseUrl}}/ClearSubscriptions
 
 ###
+# Get a list of currently online streams
+GET {{BaseUrl}}/GetOnlineChannels
 
-POST {{DukaUrl}}/ResolveChannelId
+###
+# ???
+POST {{BaseUrl}}/ResolveChannelId
 Content-Type: application/json
 
 [
@@ -40,7 +40,8 @@ Content-Type: application/json
 ]
 
 ###
-POST {{DukaUrl}}/ResolveUserId
+# ???
+POST {{BaseUrl}}/ResolveUserId
 Content-Type: application/json
 
 [
@@ -50,19 +51,19 @@ Content-Type: application/json
 
 ###
 # Notification from twitch
-POST {{DukaUrl}}/SubscriptionCallBack
+POST {{BaseUrl}}/SubscriptionCallBack
 Twitch-Eventsub-Message-Type: notification
 Twitch-Eventsub-Message-Id: 1
 
 ###
 # webhook_callback_verification from twitch
-POST {{DukaUrl}}/SubscriptionCallBack
+POST {{BaseUrl}}/SubscriptionCallBack
 Twitch-Eventsub-Message-Type: webhook_callback_verification
 Twitch-Eventsub-Message-Id: 2
 
 ###
 # revocation from twitch
-POST {{DukaUrl}}/SubscriptionCallBack
+POST {{BaseUrl}}/SubscriptionCallBack
 Twitch-Eventsub-Message-Type: revocation
 Twitch-Eventsub-Message-Id: 3
 
