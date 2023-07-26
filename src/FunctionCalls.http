@@ -1,0 +1,29 @@
+@BaseUrl=http://localhost:7071/api
+
+GET {{BaseUrl}}/GetSubscriptions
+```
+
+###
+
+POST {{BaseUrl}}/RegisterSubscriptions
+
+###
+POST {{BaseUrl}}/ClearSubscriptions
+```
+
+
+###
+
+GET {{BaseUrl}}/GetOnlineChannels
+
+###
+
+POST {{BaseUrl}}/ResolveChannelId
+
+###
+POST {{BaseUrl}}/ResolveUserId
+
+###
+POST {{BaseUrl}}/SubscriptionCallBack
+
+
