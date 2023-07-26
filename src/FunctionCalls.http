@@ -1,29 +1,29 @@
-@BaseUrl=http://localhost:7071/api
+@DukaUrl=http://localhost:7071/api
 
-GET {{BaseUrl}}/GetSubscriptions
+GET {{DukaUrl}}/GetSubscriptions
 ```
 
 ###
 
-POST {{BaseUrl}}/RegisterSubscriptions
+POST {{DukaUrl}}/RegisterSubscriptions
 
 ###
-POST {{BaseUrl}}/ClearSubscriptions
+POST {{DukaUrl}}/ClearSubscriptions
 ```
 
 
 ###
 
-GET {{BaseUrl}}/GetOnlineChannels
+GET {{DukaUrl}}/GetOnlineChannels
 
 ###
 
-POST {{BaseUrl}}/ResolveChannelId
+POST {{DukaUrl}}/ResolveChannelId
 
 ###
-POST {{BaseUrl}}/ResolveUserId
+POST {{DukaUrl}}/ResolveUserId
 
 ###
-POST {{BaseUrl}}/SubscriptionCallBack
+POST {{DukaUrl}}/SubscriptionCallBack
 
 
