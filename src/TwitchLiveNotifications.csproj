@@ -29,12 +29,4 @@
     <ProjectReference Include="..\dependencies\Twitch.Net\Twitch.Net.EventSub\Twitch.Net.EventSub.csproj" />
     <ProjectReference Include="..\dependencies\Twitch.Net\Twitch.Net.Api\Twitch.Net.Api.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ApiFunctions\" />
-    <Folder Include="Connectors\" />
-    <Folder Include="EventFunctions\" />
-    <Folder Include="EventSubFunctions\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
 </Project>
