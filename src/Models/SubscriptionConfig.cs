@@ -9,10 +9,6 @@ namespace TwitchLiveNotifications.Models;
 
 public class SubscriptionConfig : ITableEntity
 {
-    private string partitionKey;
-    private string rowKey;
-    private DateTimeOffset? timeStamp;
-    private ETag etag;
 
     [JsonPropertyName("twitchname")]
     public string TwitchName { get; set; }
@@ -57,10 +53,10 @@ public class SubscriptionConfig : ITableEntity
 
     public string TwitchId { get; set; }
 
-    public string PartitionKey { get => partitionKey; set => partitionKey = value; }
-    public string RowKey { get => rowKey; set => rowKey = value; }
-    public DateTimeOffset? Timestamp { get => timeStamp; set => timeStamp = value; }
-    public ETag ETag { get => etag; set => etag = value; }
+    public string PartitionKey { get; set; }
+    public string RowKey { get; set; }
+    public DateTimeOffset? Timestamp { get; set; }
+    public ETag ETag { get; set; }
     public static SubscriptionConfig GetTwitchSubscriptionConfiguration(string channelId, TableClient tableClient)
     {
         tableClient.CreateIfNotExists();
@@ -71,7 +67,7 @@ public class SubscriptionConfig : ITableEntity
     public static void SetTwitchSubscriptionConfiguration(SubscriptionConfig config, TableClient tableClient)
     {
         tableClient.CreateIfNotExists();
-        config.partitionKey = "TwitchSubscriptionConfig";
+        config.PartitionKey = "TwitchSubscriptionConfig";
         config.RowKey = config.TwitchId.ToLower();
         tableClient.UpsertEntity(config, TableUpdateMode.Replace);
     }
