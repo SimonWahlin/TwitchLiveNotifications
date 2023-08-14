@@ -71,6 +71,7 @@ public class SubscriptionConfig : ITableEntity
         config.RowKey = config.TwitchId.ToLower();
         tableClient.UpsertEntity(config, TableUpdateMode.Replace);
     }
+
     public bool ShouldSendNotification(string title, string category)
     {
         if (TitleFilters != null && TitleFilters.Count() > 0)
@@ -84,5 +85,4 @@ public class SubscriptionConfig : ITableEntity
 
         return true;
     }
-
 }
