@@ -74,13 +74,13 @@ public class SubscriptionConfig : ITableEntity
 
     public bool ShouldSendNotification(string title, string category)
     {
-        if (TitleFilters != null && TitleFilters.Count() > 0)
+        if (TitleFilters != null && TitleFilters.Any())
         {
-            return TitleFilters.Any(s => title.ToLower().Contains(s.ToLower()));
+            return Array.Exists(TitleFilters, s => title.Contains(s, StringComparison.OrdinalIgnoreCase));
         }
-        if (CategoryFilters != null && CategoryFilters.Count() > 0)
+        if (CategoryFilters != null && CategoryFilters.Any())
         {
-            return CategoryFilters.Any(s => category.ToLower().Contains(s.ToLower()));
+            return Array.Exists(CategoryFilters, s => category.Contains(s, StringComparison.OrdinalIgnoreCase));
         }
 
         return true;

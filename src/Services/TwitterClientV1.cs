@@ -9,7 +9,7 @@ namespace TwitchLiveNotifications.Helpers;
 
 public static class TwitterClientV1
 {
-    private static readonly bool Disable_Notifications = Environment.GetEnvironmentVariable(Constants.DisableNotifications).ToLower() == "true";
+    private static readonly bool Disable_Notifications = string.Equals(Environment.GetEnvironmentVariable(Constants.DisableNotifications), "true", StringComparison.OrdinalIgnoreCase);
     private readonly static string ConsumerKey = Environment.GetEnvironmentVariable(Constants.TwitterConsumerKey);
     private readonly static string ConsumerSecret = Environment.GetEnvironmentVariable(Constants.TwitterConsumerSecret);
     private readonly static string AccessToken = Environment.GetEnvironmentVariable(Constants.TwitterAccessToken);

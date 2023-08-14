@@ -50,6 +50,13 @@ public class RegisterSubscription
             }
 
             var user = users.Users.FirstOrDefault();
+            if(user == null)
+            {
+                // No user found
+                _logger.LogInformation("No user found for: {user} when attempting to register subscription", config.TwitchName);
+                continue;
+            }
+
             config.TwitchId = user.Id;
             SubscriptionConfig.SetTwitchSubscriptionConfiguration(config, _configTable);
 
