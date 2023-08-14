@@ -60,7 +60,7 @@ public class OnStreamOnline
                 {
                     Text = BuildMessage(_twitterTemplate, streamerName, streamUri, channel.GameName, channel.Title)
                 };
-                QueueHelpers.SendMessage(_logger, _queueClientService, Constants.queueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
+                QueueHelpers.SendMessage(_logger, _queueClientService, Constants.QueueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
 
             }
 
@@ -71,7 +71,7 @@ public class OnStreamOnline
                 {
                     Content = BuildMessage(_discordTemplate, streamerName, streamUri, channel.GameName, channel.Title)
                 };
-                QueueHelpers.SendMessage(_logger, _queueClientService, Constants.queueDiscordHandler, JsonSerializer.Serialize(discordMessage));
+                QueueHelpers.SendMessage(_logger, _queueClientService, Constants.QueueDiscordHandler, JsonSerializer.Serialize(discordMessage));
             }
 
             await StreamStatusEntry.SetTwitchStreamStatusAsync(

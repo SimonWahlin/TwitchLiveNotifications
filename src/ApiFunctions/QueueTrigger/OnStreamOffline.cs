@@ -48,7 +48,7 @@ public class OnStreamOffline
             {
                 Text = BuildMessage(_twitterTemplate, streamerName, streamUri, gamename, title)
             };
-            QueueHelpers.SendMessage(_logger, _queueClientService, Constants.queueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
+            QueueHelpers.SendMessage(_logger, _queueClientService, Constants.QueueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
         }
 
         if (!string.IsNullOrEmpty(_discordTemplate))
@@ -58,7 +58,7 @@ public class OnStreamOffline
             {
                 Content = BuildMessage(_discordTemplate, streamerName, streamUri, gamename, title)
             };
-            QueueHelpers.SendMessage(_logger, _queueClientService, Constants.queueDiscordHandler, JsonSerializer.Serialize(discordMessage));
+            QueueHelpers.SendMessage(_logger, _queueClientService, Constants.QueueDiscordHandler, JsonSerializer.Serialize(discordMessage));
         }
 
         if(streamStatus != null)

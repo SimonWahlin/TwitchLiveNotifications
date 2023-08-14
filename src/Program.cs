@@ -42,15 +42,15 @@ var host = new HostBuilder()
 
         s.AddTwitchEventSubService(config =>
         {
-            config.ClientId = Environment.GetEnvironmentVariable(Constants.Twitch_ClientId);
-            config.ClientSecret = Environment.GetEnvironmentVariable(Constants.Twitch_ClientSecret);
-            config.CallbackUrl = Environment.GetEnvironmentVariable(Constants.Twitch_CallbackUrl);
-            config.SignatureSecret = Environment.GetEnvironmentVariable(Constants.Twitch_SignatureSecret);
+            config.ClientId = Environment.GetEnvironmentVariable(Constants.TwitchClientId);
+            config.ClientSecret = Environment.GetEnvironmentVariable(Constants.TwitchClientSecret);
+            config.CallbackUrl = Environment.GetEnvironmentVariable(Constants.TwitchCallbackUrl);
+            config.SignatureSecret = Environment.GetEnvironmentVariable(Constants.TwitchSignatureSecret);
         });
         s.AddTwitchApiClient(config =>
         {
-            config.ClientId = Environment.GetEnvironmentVariable(Constants.Twitch_ClientId);
-            config.ClientSecret = Environment.GetEnvironmentVariable(Constants.Twitch_ClientSecret);
+            config.ClientId = Environment.GetEnvironmentVariable(Constants.TwitchClientId);
+            config.ClientSecret = Environment.GetEnvironmentVariable(Constants.TwitchClientSecret);
         });
         s.AddHostedService<TwitchNotificationService>();
         s.AddTransient<EventSubBuilder>();
