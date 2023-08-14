@@ -30,5 +30,7 @@ internal static class Constants
     public static readonly string tableTwichLiveNotificationsConfiguration = "TwichLiveNotificationsConfiguration";
     public static readonly string QueueServiceStorageAccount = "StorageQueueConnection__queueServiceUri";
     public static readonly string TableServiceStorageAccount = "StorageTableConnection__tableServiceUri";
+#pragma warning disable S1075 // URIs should not be hardcoded
     public static readonly string TwitterUri = "https://api.twitter.com/2/tweets";
+#pragma warning restore S1075 // URIs should not be hardcoded
 }
