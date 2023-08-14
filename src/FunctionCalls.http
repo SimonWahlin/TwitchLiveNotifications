@@ -30,7 +30,7 @@ POST {{BaseUrl}}/ClearSubscriptions
 GET {{BaseUrl}}/GetOnlineChannels
 
 ###
-# ???
+# Gets information about a list of channels. Returns entire channel object from twitch, not just the id.
 POST {{BaseUrl}}/ResolveChannelId
 Content-Type: application/json
 
@@ -40,7 +40,7 @@ Content-Type: application/json
 ]
 
 ###
-# ???
+# Gets information about a list of users. Returns entire user object from twitch, not just the id.
 POST {{BaseUrl}}/ResolveUserId
 Content-Type: application/json
 
@@ -50,21 +50,34 @@ Content-Type: application/json
 ]
 
 ###
-# Notification from twitch
+# Notification callback from twitch
 POST {{BaseUrl}}/SubscriptionCallBack
 Twitch-Eventsub-Message-Type: notification
 Twitch-Eventsub-Message-Id: 1
 
 ###
 # webhook_callback_verification from twitch
+# Called to verify the callback url and to
+# verify the secret before sending notifications
 POST {{BaseUrl}}/SubscriptionCallBack
 Twitch-Eventsub-Message-Type: webhook_callback_verification
 Twitch-Eventsub-Message-Id: 2
+
+
+###
+# Called when an event triggers on twitch
+# event differs depending on the type
+
+POST {{BaseUrl}}/SubscriptionCallBack
+Twitch-Eventsub-Message-Type: notification
+Twitch-Eventsub-Message-Id: 3
+Twitch-Eventsub-Subscription-Type: x
+Twitch-Eventsub-Subscription-Version: x
 
 ###
 # revocation from twitch
 POST {{BaseUrl}}/SubscriptionCallBack
 Twitch-Eventsub-Message-Type: revocation
-Twitch-Eventsub-Message-Id: 3
+Twitch-Eventsub-Message-Id: 4
 
 
