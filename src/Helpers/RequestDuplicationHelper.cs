@@ -16,7 +16,7 @@ internal static class RequestDuplicationHelper
             {
                 return e["value"].ToString();
             })
-            .FirstOrDefault("").Split(',');
+            .FirstOrDefault("")?.Split(',');
     }
 
     internal static void UpdateRequestList(string[] requestList, string messageId, TableClient tableClient)
