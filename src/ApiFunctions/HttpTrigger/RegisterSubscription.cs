@@ -63,7 +63,7 @@ public class RegisterSubscription
                 };
                 var message = JsonSerializer.Serialize(subscription);
                 _logger.LogInformation("Posting message: {message}", message);
-                QueueHelpers.SendMessage(_logger, _queueClientService, "queueAddSubscription", message);
+                QueueHelpers.SendMessage(_logger, _queueClientService, Constants.queueAddSubscription, message);
             }
         }
         response = req.CreateResponse(HttpStatusCode.OK);
