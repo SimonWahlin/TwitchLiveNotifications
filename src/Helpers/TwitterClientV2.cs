@@ -17,12 +17,12 @@ namespace TwitchLiveNotifications.Helpers;
 public class TwitterClientV2
 {
     private readonly ITwitterClient _client;
-    private static readonly string TwitterUri = ConfigValues.TwitterUri;
-    private static readonly bool Disable_Notifications = Environment.GetEnvironmentVariable(ConfigValues.DISABLE_NOTIFICATIONS).ToLower() == "true";
-    private readonly static string ConsumerKey = Environment.GetEnvironmentVariable(ConfigValues.TwitterConsumerKey);
-    private readonly static string ConsumerSecret = Environment.GetEnvironmentVariable(ConfigValues.TwitterConsumerSecret);
-    private readonly static string AccessToken = Environment.GetEnvironmentVariable(ConfigValues.TwitterAccessToken);
-    private readonly static string AccessTokenSecret = Environment.GetEnvironmentVariable(ConfigValues.TwitterAccessTokenSecret);
+    private static readonly string TwitterUri = Constants.TwitterUri;
+    private static readonly bool Disable_Notifications = Environment.GetEnvironmentVariable(Constants.DisableNotifications).ToLower() == "true";
+    private readonly static string ConsumerKey = Environment.GetEnvironmentVariable(Constants.TwitterConsumerKey);
+    private readonly static string ConsumerSecret = Environment.GetEnvironmentVariable(Constants.TwitterConsumerSecret);
+    private readonly static string AccessToken = Environment.GetEnvironmentVariable(Constants.TwitterAccessToken);
+    private readonly static string AccessTokenSecret = Environment.GetEnvironmentVariable(Constants.TwitterAccessTokenSecret);
     private const int MaxMessageSize = 280;
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;

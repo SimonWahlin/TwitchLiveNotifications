@@ -23,7 +23,7 @@ var host = new HostBuilder()
 
         s.AddSingleton(new TableClient(
             "AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;",
-            ConfigValues.tableTwichLiveNotificationsConfiguration
+            Constants.tableTwichLiveNotificationsConfiguration
         ));
 #else
         s.AddAzureClients(builder =>
@@ -42,15 +42,15 @@ var host = new HostBuilder()
 
         s.AddTwitchEventSubService(config =>
         {
-            config.ClientId = Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientId);
-            config.ClientSecret = Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientSecret);
-            config.CallbackUrl = Environment.GetEnvironmentVariable(ConfigValues.Twitch_CallbackUrl);
-            config.SignatureSecret = Environment.GetEnvironmentVariable(ConfigValues.Twitch_SignatureSecret);
+            config.ClientId = Environment.GetEnvironmentVariable(Constants.Twitch_ClientId);
+            config.ClientSecret = Environment.GetEnvironmentVariable(Constants.Twitch_ClientSecret);
+            config.CallbackUrl = Environment.GetEnvironmentVariable(Constants.Twitch_CallbackUrl);
+            config.SignatureSecret = Environment.GetEnvironmentVariable(Constants.Twitch_SignatureSecret);
         });
         s.AddTwitchApiClient(config =>
         {
-            config.ClientId = Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientId);
-            config.ClientSecret = Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientSecret);
+            config.ClientId = Environment.GetEnvironmentVariable(Constants.Twitch_ClientId);
+            config.ClientSecret = Environment.GetEnvironmentVariable(Constants.Twitch_ClientSecret);
         });
         s.AddHostedService<TwitchNotificationService>();
         s.AddTransient<EventSubBuilder>();

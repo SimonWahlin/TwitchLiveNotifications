@@ -10,8 +10,8 @@ namespace TwitchLiveNotifications.Helpers;
 
 public class DiscordClient
 {
-    private static readonly string DiscordWebhookUri = Environment.GetEnvironmentVariable(ConfigValues.DiscordWebhookUri);
-    private static readonly bool Disable_Notifications = Environment.GetEnvironmentVariable(ConfigValues.DISABLE_NOTIFICATIONS).ToLower() == "true";
+    private static readonly string DiscordWebhookUri = Environment.GetEnvironmentVariable(Constants.DiscordWebhookUri);
+    private static readonly bool Disable_Notifications = Environment.GetEnvironmentVariable(Constants.DisableNotifications).ToLower() == "true";
     private const int MaxMessageSize = 2000;
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;

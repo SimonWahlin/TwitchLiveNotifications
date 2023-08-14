@@ -20,8 +20,8 @@ public class OnStreamOffline
     private readonly TableClient _configTable;
     private readonly QueueServiceClient _queueClientService;
     private readonly IApiClient _apiClient;
-    private readonly string _discordTemplate = Environment.GetEnvironmentVariable(ConfigValues.DiscordTemplateOnStreamOffline);
-    private readonly string _twitterTemplate = Environment.GetEnvironmentVariable(ConfigValues.TwitterTemplateOnStreamOffline);
+    private readonly string _discordTemplate = Environment.GetEnvironmentVariable(Constants.DiscordTemplateOnStreamOffline);
+    private readonly string _twitterTemplate = Environment.GetEnvironmentVariable(Constants.TwitterTemplateOnStreamOffline);
 
     public OnStreamOffline(ILoggerFactory loggerFactory, TableClient configTable, QueueServiceClient queueClientService, IApiClient apiClient)
     {
@@ -48,7 +48,7 @@ public class OnStreamOffline
             {
                 Text = BuildMessage(_twitterTemplate, streamerName, streamUri, gamename, title)
             };
-            QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
+            QueueHelpers.SendMessage(_logger, _queueClientService, Constants.queueTwitterHandler, JsonSerializer.Serialize(tweetMessage));
         }
 
         if (!string.IsNullOrEmpty(_discordTemplate))
@@ -58,7 +58,7 @@ public class OnStreamOffline
             {
                 Content = BuildMessage(_discordTemplate, streamerName, streamUri, gamename, title)
             };
-            QueueHelpers.SendMessage(_logger, _queueClientService, ConfigValues.queueDiscordHandler, JsonSerializer.Serialize(discordMessage));
+            QueueHelpers.SendMessage(_logger, _queueClientService, Constants.queueDiscordHandler, JsonSerializer.Serialize(discordMessage));
         }
 
         if(streamStatus != null)

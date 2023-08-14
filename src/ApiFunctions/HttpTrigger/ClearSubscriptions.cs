@@ -45,10 +45,10 @@ public class ClearSubscriptions
         _logger.LogInformation("#######################################################################");
         _logger.LogInformation("########################################################################");
         _logger.LogInformation("#########################################################################");
-        _logger.LogInformation("ConfigValue: Twitch_ClientId = {value}", Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientId));
-        _logger.LogInformation("ConfigValue: Twitch_ClientSecret = {value}", Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientSecret));
-        _logger.LogInformation("ConfigValue: Twitch_CallbackUrl = {value}", Environment.GetEnvironmentVariable(ConfigValues.Twitch_CallbackUrl));
-        _logger.LogInformation("ConfigValue: Twitch_SignatureSecret = {value}", Environment.GetEnvironmentVariable(ConfigValues.Twitch_SignatureSecret));
+        _logger.LogInformation("ConfigValue: Twitch_ClientId = {value}", Environment.GetEnvironmentVariable(Constants.Twitch_ClientId));
+        _logger.LogInformation("ConfigValue: Twitch_ClientSecret = {value}", Environment.GetEnvironmentVariable(Constants.Twitch_ClientSecret));
+        _logger.LogInformation("ConfigValue: Twitch_CallbackUrl = {value}", Environment.GetEnvironmentVariable(Constants.Twitch_CallbackUrl));
+        _logger.LogInformation("ConfigValue: Twitch_SignatureSecret = {value}", Environment.GetEnvironmentVariable(Constants.Twitch_SignatureSecret));
 
         HttpResponseData response;
 
