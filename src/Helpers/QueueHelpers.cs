@@ -4,7 +4,7 @@ using System;
 
 namespace TwitchLiveNotifications.Helpers;
 
-internal class QueueHelpers
+internal static class QueueHelpers
 {
     public static void SendMessage(ILogger logger, QueueServiceClient queueClientService, string queueNameVariable, string message)
     {
