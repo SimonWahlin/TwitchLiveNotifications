@@ -27,7 +27,7 @@ internal static class Constants
     public static readonly string TwitterTemplateOnFollow = "TwitterTemplateOnFollow";
     public static readonly string TwitterTemplateOnStreamOnline = "TwitterTemplateOnStreamOnline";
     public static readonly string TwitterTemplateOnStreamOffline = "TwitterTemplateOnStreamOffline";
-    public static readonly string tableTwichLiveNotificationsConfiguration = "TwichLiveNotificationsConfiguration";
+    public static readonly string TableTwichLiveNotificationsConfiguration = "TwichLiveNotificationsConfiguration";
     public static readonly string QueueServiceStorageAccount = "StorageQueueConnection__queueServiceUri";
     public static readonly string TableServiceStorageAccount = "StorageTableConnection__tableServiceUri";
 #pragma warning disable S1075 // URIs should not be hardcoded
