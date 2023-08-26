@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using Azure.Data.Tables;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
@@ -29,14 +30,14 @@ var host = new HostBuilder()
         s.AddAzureClients(builder =>
         {
             builder.AddQueueServiceClient(
-                new Uri(Environment.GetEnvironmentVariable(ConfigValues.QueueServiceStorageAccount))
+                new Uri(Environment.GetEnvironmentVariable(Constants.QueueServiceStorageAccount))
             ).ConfigureOptions(c => c.MessageEncoding = Azure.Storage.Queues.QueueMessageEncoding.Base64);
             builder.UseCredential(new DefaultAzureCredential());
         });
 
         s.AddSingleton<TableClient>(new TableClient(
-            new Uri(Environment.GetEnvironmentVariable(ConfigValues.TableServiceStorageAccount)),
-            ConfigValues.tableTwichLiveNotificationsConfiguration,
+            new Uri(Environment.GetEnvironmentVariable(Constants.TableServiceStorageAccount)),
+            Constants.TableTwichLiveNotificationsConfiguration,
             new DefaultAzureCredential()));
 #endif
 
