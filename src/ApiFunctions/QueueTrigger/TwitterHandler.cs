@@ -18,6 +18,7 @@ public class TwitterHandler
     [Function("TwitterHandler")]
     public async Task Run([QueueTrigger("%queueTwitterHandler%", Connection = "StorageQueueConnection")] TweetMessage message)
     {
-        await TwitterClientV1.PublishTweet(message, _logger);
+        TwitterClientV2 twitterClient = new(_logger);
+        await twitterClient.PostTweet(message);
     }
 }
