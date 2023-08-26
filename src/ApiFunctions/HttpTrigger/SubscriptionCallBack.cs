@@ -33,6 +33,8 @@ public class SubscriptionCallBack
         var messageId = req.Headers.GetValues(EventSubHeaderConst.MessageId).FirstOrDefault();
         string[] requestList = Array.Empty<string>();
 
+#if DEBUG
+#else
         // For notification events, we need to keep track of duplicate requests.
         if (type == "notification")
         {
@@ -43,7 +45,7 @@ public class SubscriptionCallBack
                 return req.CreateResponse(HttpStatusCode.OK);
             }
         }
-
+#endif
         var requestBody = await (new StreamReader(req.Body).ReadToEndAsync());
         _logger.LogInformation("Got callback with {messageId} of type {type} and body: {requestBody}", messageId, type, requestBody);
 

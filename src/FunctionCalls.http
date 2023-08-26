@@ -1,0 +1,83 @@
+@BaseUrl=http://localhost:7071/api
+
+# Get a list of all registered subscriptions
+GET {{BaseUrl}}/GetSubscriptions
+
+###
+# Register a collection of new subscriptions.
+POST {{BaseUrl}}/RegisterSubscription
+Content-Type: application/json
+
+[
+    {
+      "twitchname": "thindal",
+      "twittername": "ericjohansson",
+      "discordname": "227552571450064897"
+    },
+    {
+      "twitchname": "NapalmCodes",
+      "twittername": "supervause",
+      "discordname": "323898314149986305"
+    }
+]
+
+###
+# Remove all subscriptions from the system
+POST {{BaseUrl}}/ClearSubscriptions
+
+###
+# Get a list of currently online streams
+GET {{BaseUrl}}/GetOnlineChannels
+
+###
+# Gets information about a list of channels. Returns entire channel object from twitch, not just the id.
+POST {{BaseUrl}}/ResolveChannelId
+Content-Type: application/json
+
+[
+    "thindal",
+    "NapalmCodes"
+]
+
+###
+# Gets information about a list of users. Returns entire user object from twitch, not just the id.
+POST {{BaseUrl}}/ResolveUserId
+Content-Type: application/json
+
+[
+    "thindal",
+    "NapalmCodes"
+]
+
+###
+# Notification callback from twitch
+POST {{BaseUrl}}/SubscriptionCallBack
+Twitch-Eventsub-Message-Type: notification
+Twitch-Eventsub-Message-Id: 1
+
+###
+# webhook_callback_verification from twitch
+# Called to verify the callback url and to
+# verify the secret before sending notifications
+POST {{BaseUrl}}/SubscriptionCallBack
+Twitch-Eventsub-Message-Type: webhook_callback_verification
+Twitch-Eventsub-Message-Id: 2
+
+
+###
+# Called when an event triggers on twitch
+# event differs depending on the type
+
+POST {{BaseUrl}}/SubscriptionCallBack
+Twitch-Eventsub-Message-Type: notification
+Twitch-Eventsub-Message-Id: 3
+Twitch-Eventsub-Subscription-Type: x
+Twitch-Eventsub-Subscription-Version: x
+
+###
+# revocation from twitch
+POST {{BaseUrl}}/SubscriptionCallBack
+Twitch-Eventsub-Message-Type: revocation
+Twitch-Eventsub-Message-Id: 4
+
+
