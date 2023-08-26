@@ -15,8 +15,8 @@ public class OnFollowed
     private readonly ILogger _logger;
     private readonly TableClient _configTable;
     private readonly QueueServiceClient _queueClientService;
-    private readonly string _discordTemplate = Environment.GetEnvironmentVariable(ConfigValues.DiscordTemplateOnFollow);
-    private readonly string _twitterTemplate = Environment.GetEnvironmentVariable(ConfigValues.TwitterTemplateOnFollow);
+    private readonly string _discordTemplate = Environment.GetEnvironmentVariable(Constants.DiscordTemplateOnFollow);
+    private readonly string _twitterTemplate = Environment.GetEnvironmentVariable(Constants.TwitterTemplateOnFollow);
 
     public OnFollowed(ILoggerFactory loggerFactory, TableClient configTable, QueueServiceClient queueClientService)
     {

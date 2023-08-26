@@ -9,11 +9,11 @@ namespace TwitchLiveNotifications.Helpers;
 
 public static class TwitterClientV1
 {
-    private static readonly bool Disable_Notifications = Environment.GetEnvironmentVariable(ConfigValues.DISABLE_NOTIFICATIONS).ToLower() == "true";
-    private readonly static string ConsumerKey = Environment.GetEnvironmentVariable(ConfigValues.TwitterConsumerKey);
-    private readonly static string ConsumerSecret = Environment.GetEnvironmentVariable(ConfigValues.TwitterConsumerSecret);
-    private readonly static string AccessToken = Environment.GetEnvironmentVariable(ConfigValues.TwitterAccessToken);
-    private readonly static string AccessTokenSecret = Environment.GetEnvironmentVariable(ConfigValues.TwitterAccessTokenSecret);
+    private static readonly bool Disable_Notifications = string.Equals(Environment.GetEnvironmentVariable(Constants.DisableNotifications), "true", StringComparison.OrdinalIgnoreCase);
+    private readonly static string ConsumerKey = Environment.GetEnvironmentVariable(Constants.TwitterConsumerKey);
+    private readonly static string ConsumerSecret = Environment.GetEnvironmentVariable(Constants.TwitterConsumerSecret);
+    private readonly static string AccessToken = Environment.GetEnvironmentVariable(Constants.TwitterAccessToken);
+    private readonly static string AccessTokenSecret = Environment.GetEnvironmentVariable(Constants.TwitterAccessTokenSecret);
     public const int MaxTweetLength = 280;
 
     public static async Task<ITweet> PublishTweet(TweetMessage TweetMessage, ILogger log)

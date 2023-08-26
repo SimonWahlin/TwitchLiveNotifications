@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -14,15 +15,19 @@ namespace TwitchLiveNotifications.Helpers;
 /// <summary>
 /// This is a work in progress and sadly not working yet.
 /// </summary>
+[SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "<Pending>")]
+[SuppressMessage("Roslynator", "RCS1155:Use StringComparison when comparing strings.", Justification = "<Pending>")]
+[SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "<Pending>")]
+[SuppressMessage("Critical Code Smell", "S4487:Unread \"private\" fields should be removed", Justification = "<Pending>")]
+[SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "<Pending>")]
 public class TwitterClientV2
 {
     private readonly ITwitterClient _client;
-    private static readonly string TwitterUri = ConfigValues.TwitterUri;
-    private static readonly bool Disable_Notifications = Environment.GetEnvironmentVariable(ConfigValues.DISABLE_NOTIFICATIONS).ToLower() == "true";
-    private readonly static string ConsumerKey = Environment.GetEnvironmentVariable(ConfigValues.TwitterConsumerKey);
-    private readonly static string ConsumerSecret = Environment.GetEnvironmentVariable(ConfigValues.TwitterConsumerSecret);
-    private readonly static string AccessToken = Environment.GetEnvironmentVariable(ConfigValues.TwitterAccessToken);
-    private readonly static string AccessTokenSecret = Environment.GetEnvironmentVariable(ConfigValues.TwitterAccessTokenSecret);
+    private static readonly bool Disable_Notifications = Environment.GetEnvironmentVariable(Constants.DisableNotifications).ToLower() == "true";
+    private readonly static string ConsumerKey = Environment.GetEnvironmentVariable(Constants.TwitterConsumerKey);
+    private readonly static string ConsumerSecret = Environment.GetEnvironmentVariable(Constants.TwitterConsumerSecret);
+    private readonly static string AccessToken = Environment.GetEnvironmentVariable(Constants.TwitterAccessToken);
+    private readonly static string AccessTokenSecret = Environment.GetEnvironmentVariable(Constants.TwitterAccessTokenSecret);
     private const int MaxMessageSize = 280;
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;

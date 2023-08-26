@@ -34,7 +34,7 @@ internal class TwitchNotificationService : IHostedService
 
     private Task EventOnFollowed(NotificationEvent<ChannelFollowNotificationEvent> arg)
     {
-        string queueNameVariable = ConfigValues.queueEventOnFollow;
+        string queueNameVariable = Constants.QueueEventOnFollow;
         _logger.LogInformation("[UserFollowedEvent] {UserName}#{UserId} followed {BroadcasterUserName}#{BroadcasterId}", arg.Event.UserName, arg.Event.UserId, arg.Event.BroadcasterUserName, arg.Event.BroadcasterId);
 
         var message = JsonSerializer.Serialize(arg.Event);
@@ -44,7 +44,7 @@ internal class TwitchNotificationService : IHostedService
 
     private Task EventOnStreamOnline(NotificationEvent<StreamOnlineNotificationEvent> arg)
     {
-        string queueNameVariable = ConfigValues.queueEventOnStreamOnline;
+        string queueNameVariable = Constants.QueueEventOnStreamOnline;
         _logger.LogInformation("[StreamOnlineEvent] {BroadcasterUserName}#{BroadcasterIdString} is streaming with stream id: {EventId}", arg.Event.BroadcasterUserName, arg.Event.BroadcasterIdString, arg.Event.Id);
 
         var message = JsonSerializer.Serialize(arg.Event);
@@ -54,7 +54,7 @@ internal class TwitchNotificationService : IHostedService
 
     private Task EventOnStreamOffline(NotificationEvent<StreamOfflineNotificationEvent> arg)
     {
-        string queueNameVariable = ConfigValues.queueEventOnStreamOffline;
+        string queueNameVariable = Constants.QueueEventOnStreamOffline;
         _logger.LogInformation("[StreamOfflineEvent] {BroadcasterUserName}#{BroadcasterIdString} stopped streaming.", arg.Event.BroadcasterUserName, arg.Event.BroadcasterIdString);
 
         var message = JsonSerializer.Serialize(arg.Event);

@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using Azure.Data.Tables;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
@@ -23,34 +24,34 @@ var host = new HostBuilder()
 
         s.AddSingleton(new TableClient(
             "AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;",
-            ConfigValues.tableTwichLiveNotificationsConfiguration
+            Constants.TableTwichLiveNotificationsConfiguration
         ));
 #else
         s.AddAzureClients(builder =>
         {
             builder.AddQueueServiceClient(
-                new Uri(Environment.GetEnvironmentVariable(ConfigValues.QueueServiceStorageAccount))
+                new Uri(Environment.GetEnvironmentVariable(Constants.QueueServiceStorageAccount))
             ).ConfigureOptions(c => c.MessageEncoding = Azure.Storage.Queues.QueueMessageEncoding.Base64);
             builder.UseCredential(new DefaultAzureCredential());
         });
 
         s.AddSingleton<TableClient>(new TableClient(
-            new Uri(Environment.GetEnvironmentVariable(ConfigValues.TableServiceStorageAccount)),
-            ConfigValues.tableTwichLiveNotificationsConfiguration,
+            new Uri(Environment.GetEnvironmentVariable(Constants.TableServiceStorageAccount)),
+            Constants.TableTwichLiveNotificationsConfiguration,
             new DefaultAzureCredential()));
 #endif
 
         s.AddTwitchEventSubService(config =>
         {
-            config.ClientId = Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientId);
-            config.ClientSecret = Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientSecret);
-            config.CallbackUrl = Environment.GetEnvironmentVariable(ConfigValues.Twitch_CallbackUrl);
-            config.SignatureSecret = Environment.GetEnvironmentVariable(ConfigValues.Twitch_SignatureSecret);
+            config.ClientId = Environment.GetEnvironmentVariable(Constants.TwitchClientId);
+            config.ClientSecret = Environment.GetEnvironmentVariable(Constants.TwitchClientSecret);
+            config.CallbackUrl = Environment.GetEnvironmentVariable(Constants.TwitchCallbackUrl);
+            config.SignatureSecret = Environment.GetEnvironmentVariable(Constants.TwitchSignatureSecret);
         });
         s.AddTwitchApiClient(config =>
         {
-            config.ClientId = Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientId);
-            config.ClientSecret = Environment.GetEnvironmentVariable(ConfigValues.Twitch_ClientSecret);
+            config.ClientId = Environment.GetEnvironmentVariable(Constants.TwitchClientId);
+            config.ClientSecret = Environment.GetEnvironmentVariable(Constants.TwitchClientSecret);
         });
         s.AddHostedService<TwitchNotificationService>();
         s.AddTransient<EventSubBuilder>();
