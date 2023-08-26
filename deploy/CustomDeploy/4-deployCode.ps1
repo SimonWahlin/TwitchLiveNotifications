@@ -38,10 +38,11 @@ $ProjectPath = [System.IO.Path]::Join("$PSScriptRoot",'.','..','..','src')
 Push-Location -Path "$ProjectPath" -StackName 'deployCode.ps1'
 
 Get-Item -Path 'bin/publish' -ErrorAction 'SilentlyContinue' | Remove-Item -Recurse -Force
-dotnet build --output bin/publish --configuration release
+Get-Item -Path 'bin/TwitchLiveNotifications.zip' -ErrorAction 'SilentlyContinue' | Remove-Item -Force
+dotnet publish ./TwitchLiveNotifications.csproj --output bin/publish --configuration release
 
 Set-Location -Path 'bin/publish'
-Compress-Archive -Path '.\*' -DestinationPath '..\TwitchLiveNotifications.zip' -Force
+[System.IO.Compression.ZipFile]::CreateFromDirectory($pwd.path,"$($Pwd.Path)/../TwitchLiveNotifications.zip") 
 
 $StorageContext = New-AzStorageContext -StorageAccountName $StorageAccountName -UseConnectedAccount
 Set-AzStorageBlobContent -Container 'deploy' -Context $StorageContext -File '..\TwitchLiveNotifications.zip' -Force
